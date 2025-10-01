@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Splash animatsiya 1.7s dan so‘ng yo‘qotiladi
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    if (splash) splash.classList.add('hide');
+  }, 1700);
   // --- ELEMENTS
   const nameEl = document.getElementById('name');
   const amountEl = document.getElementById('amount');
@@ -382,4 +387,5 @@ document.addEventListener('DOMContentLoaded', () => {
   showTodayBtn.addEventListener('click',()=>{showStatsToday(); showTodayBtn.classList.add('active'); showYesterdayBtn.classList.remove('active'); show7DaysBtn.classList.remove('active');});
   showYesterdayBtn.addEventListener('click',()=>{showStatsYesterday(); showYesterdayBtn.classList.add('active'); showTodayBtn.classList.remove('active'); show7DaysBtn.classList.remove('active');});
   show7DaysBtn.addEventListener('click',()=>{showStats7Days(); show7DaysBtn.classList.add('active'); showTodayBtn.classList.remove('active'); showYesterdayBtn.classList.remove('active');});
+
 });
