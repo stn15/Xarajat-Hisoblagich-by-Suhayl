@@ -84,11 +84,20 @@
     </div>
     <!-- Pastki menyu -->
     <div class="bottom-nav">
-      <button id="tabHome" class="active">🏠 UY</button>
+      <button id="tabHome" class="active">🏠 Asosiy</button>
       <button id="tabChart">📊 Diagramma</button>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
+  <!-- Service Worker ulash -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker ulandi ✅'))
+        .catch(err => console.log('Xatolik:', err));
+    }
+  </script>
 </body>
 </html>
+
