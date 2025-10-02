@@ -24,6 +24,17 @@
   </div>
   <div class="container">
     <div class="content">
+      <!-- Sozlamalar sahifasi -->
+<div id="settingsPage" style="display:none; padding:22px;">
+  <h2 style="text-align:center;">🔐 Sozlamalar</h2>
+  <input id="pinInput" type="password" placeholder="PIN kod kiriting">
+  <button id="savePinBtn">PIN saqlash</button>
+  <button id="closeSettingsBtn">⬅️ Ortga</button>
+</div>
+
+<!-- Sozlamalar tugmasi -->
+<button id="tabSettings">⚙️</button>
+
       <!-- Home Sahifa -->
       <div id="homePage">
         <h1>Xarajat Hisoblagich</h1>
@@ -62,6 +73,7 @@
         <div class="summary">Umumiy: <strong id="total">0</strong> <span id="currencyLabel">so'm</span></div>
         <ul id="list" aria-live="polite"></ul>
         <canvas id="expenseChart"></canvas>
+        
         <!-- Modal kategoriya qo‘shish -->
         <div id="catModal">
           <div>
@@ -109,5 +121,3 @@
   </script>
 </body>
 </html>
-
-
