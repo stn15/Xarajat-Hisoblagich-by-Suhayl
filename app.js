@@ -76,6 +76,41 @@ document.addEventListener('DOMContentLoaded', () => {
   currencySwitch.value = currency;
   themeSwitch.textContent = theme === "dark" ? "🌙" : "☀️";
   document.body.classList.add(theme + "-mode");
+   // --- PIN KOD KIRISH NAZORATI ---
+const PIN_KEY = 'user_pin';
+const PIN_TRIES_KEY = 'pin_tries';
+
+function checkPinAccess() {
+  const savedPin = localStorage.getItem(PIN_KEY);
+  if (!savedPin) return true; // PIN yo‘q — to‘g‘ridan kirish
+
+  let tries = Number(localStorage.getItem(PIN_TRIES_KEY) || "0");
+  let userPin = prompt("Ilovaga kirish uchun PIN kodni kiriting:");
+
+  if (userPin === savedPin) {
+    localStorage.setItem(PIN_TRIES_KEY, "0");
+    return true;
+  } else {
+    tries++;
+    localStorage.setItem(PIN_TRIES_KEY, tries.toString());
+
+    if (tries >= 10) {
+      const confirmReset = confirm("10 marta noto‘g‘ri urinish! Eski ma’lumotlarni o‘chirib tashlab, yangidan boshlaysizmi?");
+      if (confirmReset) {
+        localStorage.clear();
+        alert("Ma’lumotlar o‘chirildi. Ilova yangidan boshlanadi.");
+        location.reload();
+      }
+    } else {
+      alert(`Noto‘g‘ri PIN! Qolgan urinishlar: ${10 - tries}`);
+    }
+    return false;
+  }
+}
+
+// Kirishda PINni tekshirish
+if (!checkPinAccess()) return;
+
 
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses)); }
   function saveCategories() { localStorage.setItem(CAT_KEY, JSON.stringify(categories)); }
@@ -387,5 +422,33 @@ document.addEventListener('DOMContentLoaded', () => {
   showTodayBtn.addEventListener('click',()=>{showStatsToday(); showTodayBtn.classList.add('active'); showYesterdayBtn.classList.remove('active'); show7DaysBtn.classList.remove('active');});
   showYesterdayBtn.addEventListener('click',()=>{showStatsYesterday(); showYesterdayBtn.classList.add('active'); showTodayBtn.classList.remove('active'); show7DaysBtn.classList.remove('active');});
   show7DaysBtn.addEventListener('click',()=>{showStats7Days(); show7DaysBtn.classList.add('active'); showTodayBtn.classList.remove('active'); showYesterdayBtn.classList.remove('active');});
+});
+const tabSettings = document.getElementById('tabSettings');
+const settingsPage = document.getElementById('settingsPage');
+const pinInput = document.getElementById('pinInput');
+const savePinBtn = document.getElementById('savePinBtn');
+const closeSettingsBtn = document.getElementById('closeSettingsBtn');
 
+tabSettings.addEventListener('click', () => {
+  homePage.style.display = "none";
+  chartPage.style.display = "none";
+  settingsPage.style.display = "";
+});
+
+closeSettingsBtn.addEventListener('click', () => {
+  settingsPage.style.display = "none";
+  homePage.style.display = "";
+});
+
+savePinBtn.addEventListener('click', () => {
+  const pin = pinInput.value.trim();
+  if (pin.length < 4) {
+    alert("PIN kamida 4 raqamdan iborat bo‘lishi kerak!");
+    return;
+  }
+  localStorage.setItem(PIN_KEY, pin);
+  localStorage.setItem(PIN_TRIES_KEY, "0");
+  alert("PIN saqlandi!");
+  settingsPage.style.display = "none";
+  homePage.style.display = "";
 });
