@@ -153,6 +153,25 @@ button { cursor:pointer; }
 .stats-nav button.active { box-shadow: 0 2px 8px rgba(124,58,237,0.14);}
 #statDate { font-size: 16px; font-weight: 500; color: #8b5cf6; }
 #statsList { text-align: center; margin-top: 14px; color: #222; font-size: 15px; }
+mark {
+  background: #ffe066;
+  color: #222;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+.cat-link { cursor:pointer; text-decoration:underline; }
+.cat-link:hover { color:#8b5cf6; }
+#catStatsModal {
+  display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:10000;
+  background:rgba(0,0,0,0.33); align-items:center; justify-content:center;
+}
+#catStatsModal.active { display:flex!important; }
+#catStatsModal > div {
+  background:#fff; color:#222; border-radius:18px; padding:24px; min-width:260px; box-shadow:0 6px 32px rgba(60,0,130,0.19);
+  display:flex; flex-direction:column; gap:10px; align-items:stretch;
+}
+#catStatsTitle { text-align:center; margin-bottom:6px; }
+#catStatsInfo { text-align:center; }
 ::-webkit-scrollbar { width: 7px; background: #e0e7ef; border-radius: 8px; }
 ::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 8px; }
 @media (max-width: 480px) {

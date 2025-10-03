@@ -1,9 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // --- PIN KOD KIRISH NAZORATI ---
+  const PIN_KEY = 'user_pin';
+  const PIN_TRIES_KEY = 'pin_tries';
+
+  function askPinIfNeeded() {
+    const savedPin = localStorage.getItem(PIN_KEY);
+    if (!savedPin) return true; // PIN yo‘q, to‘g‘ridan kirish
+
+    let tries = Number(localStorage.getItem(PIN_TRIES_KEY) || "0");
+    while (true) {
+      let userPin = prompt("Ilovaga kirish uchun PIN kodni kiriting:");
+      if (userPin === null) { return false; } // Cancel bosildi
+      if (userPin === savedPin) {
+        localStorage.setItem(PIN_TRIES_KEY, "0");
+        return true;
+      } else {
+        tries++;
+        localStorage.setItem(PIN_TRIES_KEY, tries.toString());
+        if (tries >= 10) {
+          const confirmReset = confirm("10 marta noto'g'ri urinish! Eski ma’lumotlarni o‘chirib tashlab, yangidan boshlaysizmi?");
+          if (confirmReset) {
+            localStorage.clear();
+            alert("Ma’lumotlar o‘chirildi. Ilova yangidan boshlanadi.");
+            location.reload();
+            return false;
+          } else {
+            alert("Ilovaga kira olmaysiz.");
+            return false;
+          }
+        } else {
+          alert(`Noto‘g‘ri PIN! Qolgan urinishlar: ${10 - tries}`);
+        }
+      }
+    }
+  }
+
+  // Kirishda PIN ni tekshirish
+  if (!askPinIfNeeded()) return;
+
   // Splash animatsiya 1.7s dan so‘ng yo‘qotiladi
   setTimeout(() => {
     const splash = document.getElementById('splash');
     if (splash) splash.classList.add('hide');
   }, 1700);
+
   // --- ELEMENTS
   const nameEl = document.getElementById('name');
   const amountEl = document.getElementById('amount');
@@ -64,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let limit = Number(localStorage.getItem(LIMIT_KEY) || "0");
   let lang = localStorage.getItem(LANG_KEY) || "uz";
   let currency = localStorage.getItem(CUR_KEY) || "UZS";
-  let theme = localStorage.getItem(THEME_KEY) || "dark";
+  let theme = localStorage.getItem(THEME_KEY);
 
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -74,43 +114,44 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch (e) { expenses = []; }
   langSwitch.value = lang;
   currencySwitch.value = currency;
-  themeSwitch.textContent = theme === "dark" ? "🌙" : "☀️";
-  document.body.classList.add(theme + "-mode");
-   // --- PIN KOD KIRISH NAZORATI ---
-const PIN_KEY = 'user_pin';
-const PIN_TRIES_KEY = 'pin_tries';
 
-function checkPinAccess() {
-  const savedPin = localStorage.getItem(PIN_KEY);
-  if (!savedPin) return true; // PIN yo‘q — to‘g‘ridan kirish
-
-  let tries = Number(localStorage.getItem(PIN_TRIES_KEY) || "0");
-  let userPin = prompt("Ilovaga kirish uchun PIN kodni kiriting:");
-
-  if (userPin === savedPin) {
-    localStorage.setItem(PIN_TRIES_KEY, "0");
-    return true;
-  } else {
-    tries++;
-    localStorage.setItem(PIN_TRIES_KEY, tries.toString());
-
-    if (tries >= 10) {
-      const confirmReset = confirm("10 marta noto‘g‘ri urinish! Eski ma’lumotlarni o‘chirib tashlab, yangidan boshlaysizmi?");
-      if (confirmReset) {
-        localStorage.clear();
-        alert("Ma’lumotlar o‘chirildi. Ilova yangidan boshlanadi.");
-        location.reload();
-      }
-    } else {
-      alert(`Noto‘g‘ri PIN! Qolgan urinishlar: ${10 - tries}`);
-    }
-    return false;
+  // --- DARK/LIGHT MODE AUTO + TOGGLER ---
+  function getSystemTheme() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
-}
+  function applyTheme(newTheme) {
+    document.body.classList.remove('light-mode', 'dark-mode');
+    document.body.classList.add(newTheme + '-mode');
+    themeSwitch.textContent = newTheme === "dark" ? "🌙" : "☀️";
+  }
+  // Theme o‘qish va o‘rnatish
+  if (!theme) {
+    theme = getSystemTheme();
+    localStorage.setItem('theme_v2', theme);
+  }
+  applyTheme(theme);
 
-// Kirishda PINni tekshirish
-if (!checkPinAccess()) return;
+  // Theme tugmasi eventi
+  themeSwitch.addEventListener('click', () => {
+    theme = (theme === "dark") ? "light" : "dark";
+    localStorage.setItem('theme_v2', theme);
+    applyTheme(theme);
+  });
 
+  // Agar qurilma theme-si o‘zgarsa, avtomatik moslash (faqat user tanlovi yo‘q bo‘lsa)
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem('theme_v2')) {
+      theme = e.matches ? "dark" : "light";
+      applyTheme(theme);
+    }
+  });
+
+  // --- Qidiruvda highlight funksiyasi ---
+  function highlightMatch(text, keyword) {
+    if (!keyword) return escapeHtml(text);
+    const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return escapeHtml(text).replace(regex, '<mark>$1</mark>');
+  }
 
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses)); }
   function saveCategories() { localStorage.setItem(CAT_KEY, JSON.stringify(categories)); }
@@ -172,7 +213,7 @@ if (!checkPinAccess()) return;
       const cat = categories.find(c => c.name === item.category) || { emoji: '', name: item.category };
       const left = document.createElement('div');
       left.innerHTML = `
-        <span>${escapeHtml(item.name)}</span>
+        <span>${highlightMatch(item.name, keyword)}</span>
         <span class="cat">${cat.emoji} ${escapeHtml(item.category)}</span>
         <span>${formatNumber(item.amount)} ${currency}</span>
         <span style="margin-left:8px; color:#bbb;">${item.date ? item.date : ''}</span>
@@ -294,14 +335,7 @@ if (!checkPinAccess()) return;
     });
   }
 
-  // THEME
-  themeSwitch.addEventListener('click', () => {
-    document.body.classList.remove(theme + "-mode");
-    theme = theme === "dark" ? "light" : "dark";
-    document.body.classList.add(theme + "-mode");
-    themeSwitch.textContent = theme === "dark" ? "🌙" : "☀️";
-    localStorage.setItem("theme_v2", theme);
-  });
+  // THEME (handled above)
 
   // LANGUAGE (Qisqa variant)
   langSwitch.addEventListener('change', () => {
@@ -367,7 +401,121 @@ if (!checkPinAccess()) return;
     showStatsToday();
   });
 
-  // Diagramma sahifasi funksiya va eventlar
+  // ------ SOZLAMALAR SAHIFASI (PIN SAQLASH/O'CHIRISH) ------
+  const tabSettings = document.getElementById('tabSettings');
+  const settingsPage = document.getElementById('settingsPage');
+  const pinInput = document.getElementById('pinInput');
+  const savePinBtn = document.getElementById('savePinBtn');
+  const removePinBtn = document.getElementById('removePinBtn');
+  const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+
+  tabSettings.addEventListener('click', () => {
+    homePage.style.display = "none";
+    chartPage.style.display = "none";
+    settingsPage.style.display = "";
+    pinInput.value = "";
+
+    // PIN bor-yo‘qligiga qarab o‘chirish tugmasini ko‘rsatish
+    if (localStorage.getItem(PIN_KEY)) {
+      removePinBtn.style.display = "";
+    } else {
+      removePinBtn.style.display = "none";
+    }
+  });
+
+  closeSettingsBtn.addEventListener('click', () => {
+    settingsPage.style.display = "none";
+    homePage.style.display = "";
+  });
+
+  // PIN saqlash
+  savePinBtn.addEventListener('click', () => {
+    const pin = pinInput.value.trim();
+    if (pin.length < 4 || !/^\d{4,}$/.test(pin)) {
+      alert("PIN kamida 4ta raqamdan iborat bo‘lishi kerak!");
+      return;
+    }
+    localStorage.setItem(PIN_KEY, pin);
+    localStorage.setItem(PIN_TRIES_KEY, "0");
+    alert("PIN saqlandi!");
+    settingsPage.style.display = "none";
+    homePage.style.display = "";
+  });
+
+  // PINni o‘chirish
+  removePinBtn.addEventListener('click', () => {
+    const conf = confirm("PINni o‘chirib tashlashni istaysizmi?");
+    if (conf) {
+      localStorage.removeItem(PIN_KEY);
+      localStorage.removeItem(PIN_TRIES_KEY);
+      alert("PIN o‘chirildi! Endi ilova himoyasiz ochiladi.");
+      settingsPage.style.display = "none";
+      homePage.style.display = "";
+    }
+  });
+
+  // ---- Kategoriya statistikasi modal + trend ----
+  const catStatsModal = document.getElementById('catStatsModal');
+  const catStatsTitle = document.getElementById('catStatsTitle');
+  const catStatsInfo = document.getElementById('catStatsInfo');
+  const catStatsChart = document.getElementById('catStatsChart');
+  const closeCatStatsModal = document.getElementById('closeCatStatsModal');
+  let catStatsChartObj = null;
+
+  closeCatStatsModal.addEventListener('click', () => {
+    catStatsModal.classList.remove('active');
+    if(catStatsChartObj) catStatsChartObj.destroy();
+  });
+
+  function openCategoryStats(categoryName) {
+    const catExps = expenses.filter(e => e.category === categoryName);
+    if (!catExps.length) return;
+
+    const total = catExps.reduce((s, it) => s + Number(it.amount), 0);
+
+    let byDay = {};
+    for(let e of catExps) {
+      byDay[e.date] = (byDay[e.date]||0) + Number(e.amount);
+    }
+    let maxDay = Object.keys(byDay).length ? Object.keys(byDay).reduce((a,b)=> byDay[a]>byDay[b]?a:b ) : "-";
+    let maxSum = byDay[maxDay] || 0;
+
+    let days = [];
+    let data = [];
+    for(let i=6;i>=0;i--){
+      let d = new Date(Date.now()-86400000*i);
+      let dayStr = d.toISOString().slice(0,10);
+      days.push(dayStr);
+      data.push(catExps.filter(e=>e.date===dayStr).reduce((sum,e)=>sum+Number(e.amount),0));
+    }
+
+    catStatsTitle.textContent = `Statistika: ${categoryName}`;
+    catStatsInfo.innerHTML = `
+      <b>Umumiy:</b> ${formatNumber(total)} ${currency}<br>
+      <b>Ko‘p sarflangan kun:</b> ${maxDay} (${formatNumber(maxSum)} ${currency})
+    `;
+
+    if(catStatsChartObj) catStatsChartObj.destroy();
+    catStatsChartObj = new Chart(catStatsChart, {
+      type: 'bar',
+      data: {
+        labels: days,
+        datasets: [{
+          label: "7 kunlik trend",
+          data: data,
+          backgroundColor: "#8b5cf6"
+        }]
+      },
+      options: {
+        scales: { x: { grid:{color:'#e0e7ef'} }, y: { beginAtZero:true, grid:{color:'#e0e7ef'} } },
+        plugins: { legend:{display:false} }
+      }
+    });
+
+    catStatsModal.classList.add('active');
+  }
+
+  // --- STATISTIKA DIAGRAMMASI ---
   function renderStatsChart(labels, data) {
     if(statsChartObj) statsChartObj.destroy();
     statsChartObj = new Chart(statsChart, {
@@ -386,6 +534,7 @@ if (!checkPinAccess()) return;
       }
     });
   }
+
   function showStatsToday() {
     const today = new Date();
     const key = today.toISOString().slice(0,10);
@@ -394,7 +543,9 @@ if (!checkPinAccess()) return;
     let cats = categories.map(c=>c.name);
     let data = cats.map(cat => todayExp.filter(e=>e.category===cat).reduce((sum,e)=>sum+Number(e.amount),0));
     renderStatsChart(cats, data);
-    statsList.innerHTML = cats.map((cat,i)=> `${categories[i].emoji} ${cat}: <b>${data[i]}</b>` ).join("<br>");
+    statsList.innerHTML = cats.map((cat,i) =>
+      `<span class="cat-link" data-cat="${cat}">${categories[i].emoji} ${cat}: <b>${data[i]}</b></span>`
+    ).join("<br>");
   }
   function showStatsYesterday() {
     const yester = new Date(Date.now()-86400000);
@@ -404,7 +555,9 @@ if (!checkPinAccess()) return;
     let cats = categories.map(c=>c.name);
     let data = cats.map(cat => yesterExp.filter(e=>e.category===cat).reduce((sum,e)=>sum+Number(e.amount),0));
     renderStatsChart(cats, data);
-    statsList.innerHTML = cats.map((cat,i)=> `${categories[i].emoji} ${cat}: <b>${data[i]}</b>` ).join("<br>");
+    statsList.innerHTML = cats.map((cat,i) =>
+      `<span class="cat-link" data-cat="${cat}">${categories[i].emoji} ${cat}: <b>${data[i]}</b></span>`
+    ).join("<br>");
   }
   function showStats7Days() {
     let days = [];
@@ -417,38 +570,19 @@ if (!checkPinAccess()) return;
     });
     statDate.textContent = `Oxirgi 7 kun: ${days[0]} - ${days[6]}`;
     renderStatsChart(days, data);
-    statsList.innerHTML = days.map((day,i)=> `${day}: <b>${data[i]}</b>` ).join("<br>");
+    statsList.innerHTML = days.map((day,i)=>
+      `<span class="cat-link" data-cat="${categories[i] ? categories[i].name : ''}">${day}: <b>${data[i]}</b></span>`
+    ).join("<br>");
   }
   showTodayBtn.addEventListener('click',()=>{showStatsToday(); showTodayBtn.classList.add('active'); showYesterdayBtn.classList.remove('active'); show7DaysBtn.classList.remove('active');});
   showYesterdayBtn.addEventListener('click',()=>{showStatsYesterday(); showYesterdayBtn.classList.add('active'); showTodayBtn.classList.remove('active'); show7DaysBtn.classList.remove('active');});
   show7DaysBtn.addEventListener('click',()=>{showStats7Days(); show7DaysBtn.classList.add('active'); showTodayBtn.classList.remove('active'); showYesterdayBtn.classList.remove('active');});
-});
-const tabSettings = document.getElementById('tabSettings');
-const settingsPage = document.getElementById('settingsPage');
-const pinInput = document.getElementById('pinInput');
-const savePinBtn = document.getElementById('savePinBtn');
-const closeSettingsBtn = document.getElementById('closeSettingsBtn');
 
-tabSettings.addEventListener('click', () => {
-  homePage.style.display = "none";
-  chartPage.style.display = "none";
-  settingsPage.style.display = "";
-});
-
-closeSettingsBtn.addEventListener('click', () => {
-  settingsPage.style.display = "none";
-  homePage.style.display = "";
-});
-
-savePinBtn.addEventListener('click', () => {
-  const pin = pinInput.value.trim();
-  if (pin.length < 4) {
-    alert("PIN kamida 4 raqamdan iborat bo‘lishi kerak!");
-    return;
-  }
-  localStorage.setItem(PIN_KEY, pin);
-  localStorage.setItem(PIN_TRIES_KEY, "0");
-  alert("PIN saqlandi!");
-  settingsPage.style.display = "none";
-  homePage.style.display = "";
+  // Kategoriya statistikasi modal (delegation) - statsList ustida
+  statsList.addEventListener('click', function(e) {
+    if (e.target.classList.contains('cat-link')) {
+      const cat = e.target.getAttribute('data-cat');
+      if(cat) openCategoryStats(cat);
+    }
+  });
 });

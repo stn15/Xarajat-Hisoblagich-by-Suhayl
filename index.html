@@ -4,20 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Xarajat Hisoblagich</title>
-  <!-- Manifestni ulash -->
   <link rel="manifest" href="manifest.json">
-
-  <!-- Ikonalar (PWA uchun) -->
   <link rel="icon" sizes="192x192" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
-
-  <!-- Rangi -->
   <meta name="theme-color" content="#ffffff">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-   <!-- Splash animatsiya va logo -->
-   <div class="splash" id="splash">
+  <!-- Splash animatsiya va logo -->
+  <div class="splash" id="splash">
     <img src="logo.png" alt="Logo" class="logo-anim" />
     <div class="splash-title">Xarajat Hisoblagich</div>
     <div class="splash-author">by Suhayl</div>
@@ -25,16 +20,15 @@
   <div class="container">
     <div class="content">
       <!-- Sozlamalar sahifasi -->
-<div id="settingsPage" style="display:none; padding:22px;">
-  <h2 style="text-align:center;">🔐 Sozlamalar</h2>
-  <input id="pinInput" type="password" placeholder="PIN kod kiriting">
-  <button id="savePinBtn">PIN saqlash</button>
-  <button id="closeSettingsBtn">⬅️ Ortga</button>
-</div>
-
-<!-- Sozlamalar tugmasi -->
-<button id="tabSettings">⚙️</button>
-
+      <div id="settingsPage" style="display:none; padding:22px;">
+        <h2 style="text-align:center;">🔐 Sozlamalar</h2>
+        <input id="pinInput" type="password" placeholder="PIN kod kiriting">
+        <button id="savePinBtn">PIN saqlash</button>
+        <button id="removePinBtn" style="background:#ff6b6b; color:#fff; margin-top:8px;">PINni o‘chirish</button>
+        <button id="closeSettingsBtn">⬅️ Ortga</button>
+      </div>
+      <!-- Sozlamalar tugmasi -->
+      <button id="tabSettings">⚙️</button>
       <!-- Home Sahifa -->
       <div id="homePage">
         <h1>Xarajat Hisoblagich</h1>
@@ -73,7 +67,6 @@
         <div class="summary">Umumiy: <strong id="total">0</strong> <span id="currencyLabel">so'm</span></div>
         <ul id="list" aria-live="polite"></ul>
         <canvas id="expenseChart"></canvas>
-        
         <!-- Modal kategoriya qo‘shish -->
         <div id="catModal">
           <div>
@@ -101,6 +94,15 @@
         <div id="statDate" style="text-align:center; margin-bottom:12px;"></div>
         <canvas id="statsChart"></canvas>
         <div id="statsList"></div>
+        <!-- Kategoriya statistikasi modal -->
+        <div id="catStatsModal">
+          <div>
+            <div id="catStatsTitle" style="font-weight:700;font-size:19px;"></div>
+            <div id="catStatsInfo"></div>
+            <canvas id="catStatsChart" style="margin-top:20px;max-width:340px;"></canvas>
+            <button id="closeCatStatsModal" style="margin-top:12px;">Yopish</button>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Pastki menyu -->
