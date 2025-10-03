@@ -1,6 +1,6 @@
 {
   "name": "Xarajat Hisoblagich",
-  "short_name": "Hisoblagich",
+  "short_name": "XH",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -12,4 +12,5 @@
       "type": "image/png"
     }
   ]
+
 }
