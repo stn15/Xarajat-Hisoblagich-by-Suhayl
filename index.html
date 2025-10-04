@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Splash animatsiya va logo -->
   <div class="splash" id="splash">
     <img src="logo.png" alt="Logo" class="logo-anim" />
     <div class="splash-title">Xarajat Hisoblagich</div>
@@ -104,21 +103,39 @@
           </div>
         </div>
       </div>
+      <!-- Maqsadlar Sahifa -->
+      <div id="goalPage" style="display:none;">
+        <h2 style="text-align:center;">🎯 Maqsadlar</h2>
+        <div class="goal-add-section">
+          <input id="goalName" type="text" placeholder="Pul yig'moqchi bo'lgan narsangiz nomi">
+          <input id="goalTarget" type="number" placeholder="Narxi">
+          <select id="goalCurrency" class="goal-currency-select">
+            <option value="UZS">so'm</option>
+            <option value="USD">$</option>
+            <option value="RUB">₽</option>
+          </select>
+          <button id="addGoalBtn" class="add-btn">+ Maqsad qo'shish</button>
+        </div>
+        <div id="goalList"></div>
+      </div>
     </div>
     <!-- Pastki menyu -->
     <div class="bottom-nav">
       <button id="tabHome" class="active">🏠 Asosiy</button>
       <button id="tabChart">📊 Diagramma</button>
+      <button id="tabGoal">🎯 Maqsad</button>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
-  <!-- Service Worker ulash -->
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker ulandi ✅'))
-        .catch(err => console.log('Xatolik:', err));
+    // Service Worker faqat http(s) yoki localhostda ishlaydi, file:// da emas!
+    if (location.protocol === "http:" || location.protocol === "https:" || location.hostname === "localhost") {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('Service Worker ulandi ✅'))
+          .catch(err => console.log('Xatolik:', err));
+      }
     }
   </script>
 </body>

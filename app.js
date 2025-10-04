@@ -1,11 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // --- VALYUTA KURSLARI ---
+  let kursUSD = 12000, kursRUB = 140;
+  function fetchRates() {
+    fetch('https://open.er-api.com/v6/latest/UZS')
+      .then(r=>r.json()).then(d=>{
+        if(d && d.rates){
+          kursUSD = 1/d.rates.USD;
+          kursRUB = 1/d.rates.RUB;
+        }
+      }).catch(()=>{});
+  }
+  fetchRates();
+  setInterval(fetchRates, 1000*60*60*3);
+
+  function convert(amount, from, to) {
+    if(from===to) return amount;
+    if(from==="UZS" && to==="USD") return amount/kursUSD;
+    if(from==="UZS" && to==="RUB") return amount/kursRUB;
+    if(from==="USD" && to==="UZS") return amount*kursUSD;
+    if(from==="USD" && to==="RUB") return (amount*kursUSD)/kursRUB;
+    if(from==="RUB" && to==="UZS") return amount*kursRUB;
+    if(from==="RUB" && to==="USD") return (amount*kursRUB)/kursUSD;
+    return amount;
+  }
+
   // --- PIN KOD KIRISH NAZORATI ---
   const PIN_KEY = 'user_pin';
   const PIN_TRIES_KEY = 'pin_tries';
 
   function askPinIfNeeded() {
     const savedPin = localStorage.getItem(PIN_KEY);
-    if (!savedPin) return true; // PIN yo‘q, to‘g‘ridan kirish
+    if (!savedPin) return true; // PIN yo'q, to'g'ridan kirish
 
     let tries = Number(localStorage.getItem(PIN_TRIES_KEY) || "0");
     while (true) {
@@ -18,10 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
         tries++;
         localStorage.setItem(PIN_TRIES_KEY, tries.toString());
         if (tries >= 10) {
-          const confirmReset = confirm("10 marta noto'g'ri urinish! Eski ma’lumotlarni o‘chirib tashlab, yangidan boshlaysizmi?");
+          const confirmReset = confirm("10 marta noto'g'ri urinish! Eski ma'lumotlarni o'chirib tashlab, yangidan boshlaysizmi?");
           if (confirmReset) {
             localStorage.clear();
-            alert("Ma’lumotlar o‘chirildi. Ilova yangidan boshlanadi.");
+            alert("Ma'lumotlar o'chirildi. Ilova yangidan boshlanadi.");
             location.reload();
             return false;
           } else {
@@ -29,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
           }
         } else {
-          alert(`Noto‘g‘ri PIN! Qolgan urinishlar: ${10 - tries}`);
+          alert(`Noto'g'ri PIN! Qolgan urinishlar: ${10 - tries}`);
         }
       }
     }
@@ -38,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Kirishda PIN ni tekshirish
   if (!askPinIfNeeded()) return;
 
-  // Splash animatsiya 1.7s dan so‘ng yo‘qotiladi
+  // Splash animatsiya 1.7s dan so'ng yo'qotiladi
   setTimeout(() => {
     const splash = document.getElementById('splash');
     if (splash) splash.classList.add('hide');
@@ -68,11 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const newCatEmoji = document.getElementById('newCatEmoji');
   const saveCatBtn = document.getElementById('saveCatBtn');
   const closeCatModal = document.getElementById('closeCatModal');
-  // Tab bar
+  // Tab bar & pages
   const homePage = document.getElementById('homePage');
   const chartPage = document.getElementById('chartPage');
+  const goalPage = document.getElementById('goalPage');
   const tabHome = document.getElementById('tabHome');
   const tabChart = document.getElementById('tabChart');
+  const tabGoal = document.getElementById('tabGoal');
   // Stats
   const statsChart = document.getElementById('statsChart');
   const showTodayBtn = document.getElementById('showTodayBtn');
@@ -89,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const LANG_KEY = 'lang_v2';
   const CUR_KEY = 'currency_v2';
   const THEME_KEY = 'theme_v2';
+  const GOALS_KEY = 'goal_list';
 
   let expenses = [];
   let categories = [
@@ -105,12 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let lang = localStorage.getItem(LANG_KEY) || "uz";
   let currency = localStorage.getItem(CUR_KEY) || "UZS";
   let theme = localStorage.getItem(THEME_KEY);
-
+  let goalList = [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) expenses = JSON.parse(raw);
     const catRaw = localStorage.getItem(CAT_KEY);
     if (catRaw) categories = JSON.parse(catRaw);
+    const goalsRaw = localStorage.getItem(GOALS_KEY);
+    if (goalsRaw) goalList = JSON.parse(goalsRaw);
   } catch (e) { expenses = []; }
   langSwitch.value = lang;
   currencySwitch.value = currency;
@@ -123,22 +153,30 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('light-mode', 'dark-mode');
     document.body.classList.add(newTheme + '-mode');
     themeSwitch.textContent = newTheme === "dark" ? "🌙" : "☀️";
+    Chart.defaults.color = newTheme === "dark" ? "#cbd5e1" : "#222";
+    Chart.defaults.plugins.legend.labels.color = newTheme === "dark" ? "#cbd5e1" : "#222";
+    Chart.defaults.scales = {
+      x: { ticks: { color: newTheme === "dark" ? "#cbd5e1" : "#222" }, grid: { color: newTheme === "dark" ? "#22242c" : "#e0e7ef" } },
+      y: { ticks: { color: newTheme === "dark" ? "#cbd5e1" : "#222" }, grid: { color: newTheme === "dark" ? "#22242c" : "#e0e7ef" } }
+    };
+    document.querySelectorAll(".cat, #statsList, .goal-title, .goal-meta").forEach(e=>{
+      e.style.color = newTheme === "dark" ? "#cbd5e1" : "#222";
+    });
   }
-  // Theme o‘qish va o‘rnatish
   if (!theme) {
     theme = getSystemTheme();
     localStorage.setItem('theme_v2', theme);
   }
   applyTheme(theme);
 
-  // Theme tugmasi eventi
   themeSwitch.addEventListener('click', () => {
     theme = (theme === "dark") ? "light" : "dark";
     localStorage.setItem('theme_v2', theme);
     applyTheme(theme);
+    renderList();
+    renderGoalList();
+    showStatsToday();
   });
-
-  // Agar qurilma theme-si o‘zgarsa, avtomatik moslash (faqat user tanlovi yo‘q bo‘lsa)
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
     if (!localStorage.getItem('theme_v2')) {
       theme = e.matches ? "dark" : "light";
@@ -155,10 +193,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses)); }
   function saveCategories() { localStorage.setItem(CAT_KEY, JSON.stringify(categories)); }
+  function saveGoals() { localStorage.setItem(GOALS_KEY, JSON.stringify(goalList)); }
   function formatNumber(n) {
     if (currency === "UZS") return Number(n).toLocaleString("uz-UZ");
-    if (currency === "USD") return (Number(n)/12000).toFixed(2);
-    if (currency === "RUB") return (Number(n)/140).toFixed(2);
+    if (currency === "USD") return (Number(n)/kursUSD).toFixed(2);
+    if (currency === "RUB") return (Number(n)/kursRUB).toFixed(2);
     return Number(n).toLocaleString();
   }
   function escapeHtml(str) {
@@ -329,13 +368,16 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       options: {
         plugins: {
-          legend: { position: 'bottom', labels: { color: "#cbd5e1" } }
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: theme === "dark" ? "#cbd5e1" : "#222"
+            }
+          }
         }
       }
     });
   }
-
-  // THEME (handled above)
 
   // LANGUAGE (Qisqa variant)
   langSwitch.addEventListener('change', () => {
@@ -352,6 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currency = currencySwitch.value;
     localStorage.setItem(CUR_KEY, currency);
     renderList();
+    renderGoalList();
   });
 
   // LIMIT
@@ -362,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderList();
   });
 
-  // CATEGORY QO‘SHISH MODAL
+  // CATEGORY QO'SHISH MODAL
   addCatBtn.addEventListener('click', () => {
     catModal.classList.add("active");
     newCatName.value = '';
@@ -392,13 +435,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // TAB BAR switching
   tabHome.addEventListener('click', () => {
-    tabHome.classList.add("active"); tabChart.classList.remove("active");
-    homePage.style.display = ""; chartPage.style.display = "none";
+    tabHome.classList.add("active"); tabChart.classList.remove("active"); tabGoal.classList.remove("active");
+    homePage.style.display = ""; chartPage.style.display = "none"; goalPage.style.display = "none";
   });
   tabChart.addEventListener('click', () => {
-    tabHome.classList.remove("active"); tabChart.classList.add("active");
-    homePage.style.display = "none"; chartPage.style.display = "";
+    tabHome.classList.remove("active"); tabChart.classList.add("active"); tabGoal.classList.remove("active");
+    homePage.style.display = "none"; chartPage.style.display = ""; goalPage.style.display = "none";
     showStatsToday();
+  });
+  tabGoal.addEventListener('click', () => {
+    tabHome.classList.remove("active"); tabChart.classList.remove("active"); tabGoal.classList.add("active");
+    homePage.style.display = "none"; chartPage.style.display = "none"; goalPage.style.display = "";
+    renderGoalList();
   });
 
   // ------ SOZLAMALAR SAHIFASI (PIN SAQLASH/O'CHIRISH) ------
@@ -412,10 +460,10 @@ document.addEventListener('DOMContentLoaded', () => {
   tabSettings.addEventListener('click', () => {
     homePage.style.display = "none";
     chartPage.style.display = "none";
+    goalPage.style.display = "none";
     settingsPage.style.display = "";
     pinInput.value = "";
 
-    // PIN bor-yo‘qligiga qarab o‘chirish tugmasini ko‘rsatish
     if (localStorage.getItem(PIN_KEY)) {
       removePinBtn.style.display = "";
     } else {
@@ -428,11 +476,10 @@ document.addEventListener('DOMContentLoaded', () => {
     homePage.style.display = "";
   });
 
-  // PIN saqlash
   savePinBtn.addEventListener('click', () => {
     const pin = pinInput.value.trim();
     if (pin.length < 4 || !/^\d{4,}$/.test(pin)) {
-      alert("PIN kamida 4ta raqamdan iborat bo‘lishi kerak!");
+      alert("PIN kamida 4ta raqamdan iborat bo'lishi kerak!");
       return;
     }
     localStorage.setItem(PIN_KEY, pin);
@@ -442,13 +489,12 @@ document.addEventListener('DOMContentLoaded', () => {
     homePage.style.display = "";
   });
 
-  // PINni o‘chirish
   removePinBtn.addEventListener('click', () => {
-    const conf = confirm("PINni o‘chirib tashlashni istaysizmi?");
+    const conf = confirm("PINni o'chirib tashlashni istaysizmi?");
     if (conf) {
       localStorage.removeItem(PIN_KEY);
       localStorage.removeItem(PIN_TRIES_KEY);
-      alert("PIN o‘chirildi! Endi ilova himoyasiz ochiladi.");
+      alert("PIN o'chirildi! Endi ilova himoyasiz ochiladi.");
       settingsPage.style.display = "none";
       homePage.style.display = "";
     }
@@ -492,7 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
     catStatsTitle.textContent = `Statistika: ${categoryName}`;
     catStatsInfo.innerHTML = `
       <b>Umumiy:</b> ${formatNumber(total)} ${currency}<br>
-      <b>Ko‘p sarflangan kun:</b> ${maxDay} (${formatNumber(maxSum)} ${currency})
+      <b>Ko'p sarflangan kun:</b> ${maxDay} (${formatNumber(maxSum)} ${currency})
     `;
 
     if(catStatsChartObj) catStatsChartObj.destroy();
@@ -503,11 +549,21 @@ document.addEventListener('DOMContentLoaded', () => {
         datasets: [{
           label: "7 kunlik trend",
           data: data,
-          backgroundColor: "#8b5cf6"
+          backgroundColor: theme === "dark" ? "#8b5cf6" : "#4caf50"
         }]
       },
       options: {
-        scales: { x: { grid:{color:'#e0e7ef'} }, y: { beginAtZero:true, grid:{color:'#e0e7ef'} } },
+        scales: {
+          x: {
+            ticks: { color: theme === "dark" ? "#cbd5e1" : "#222" },
+            grid: { color: theme === "dark" ? "#22242c" : "#e0e7ef" }
+          },
+          y: {
+            beginAtZero:true,
+            ticks: { color: theme === "dark" ? "#cbd5e1" : "#222" },
+            grid: { color: theme === "dark" ? "#22242c" : "#e0e7ef" }
+          }
+        },
         plugins: { legend:{display:false} }
       }
     });
@@ -525,11 +581,21 @@ document.addEventListener('DOMContentLoaded', () => {
         datasets: [{
           label: 'Sarflangan summa',
           data: data,
-          backgroundColor: "#8b5cf6"
+          backgroundColor: theme === "dark" ? "#8b5cf6" : "#4caf50"
         }]
       },
       options: {
-        scales: { x: { grid:{color:'#e0e7ef'} }, y: { beginAtZero:true, grid:{color:'#e0e7ef'} } },
+        scales: {
+          x: {
+            ticks: { color: theme === "dark" ? "#cbd5e1" : "#222" },
+            grid: { color: theme === "dark" ? "#22242c" : "#e0e7ef" }
+          },
+          y: {
+            beginAtZero:true,
+            ticks: { color: theme === "dark" ? "#cbd5e1" : "#222" },
+            grid: { color: theme === "dark" ? "#22242c" : "#e0e7ef" }
+          }
+        },
         plugins: { legend:{display:false} }
       }
     });
@@ -569,20 +635,136 @@ document.addEventListener('DOMContentLoaded', () => {
       return expenses.filter(e=>e.date===day).reduce((sum,e)=>sum+Number(e.amount),0);
     });
     statDate.textContent = `Oxirgi 7 kun: ${days[0]} - ${days[6]}`;
-    renderStatsChart(days, data);
     statsList.innerHTML = days.map((day,i)=>
       `<span class="cat-link" data-cat="${categories[i] ? categories[i].name : ''}">${day}: <b>${data[i]}</b></span>`
     ).join("<br>");
+    renderStatsChart(days, data);
   }
   showTodayBtn.addEventListener('click',()=>{showStatsToday(); showTodayBtn.classList.add('active'); showYesterdayBtn.classList.remove('active'); show7DaysBtn.classList.remove('active');});
   showYesterdayBtn.addEventListener('click',()=>{showStatsYesterday(); showYesterdayBtn.classList.add('active'); showTodayBtn.classList.remove('active'); show7DaysBtn.classList.remove('active');});
   show7DaysBtn.addEventListener('click',()=>{showStats7Days(); show7DaysBtn.classList.add('active'); showTodayBtn.classList.remove('active'); showYesterdayBtn.classList.remove('active');});
 
-  // Kategoriya statistikasi modal (delegation) - statsList ustida
   statsList.addEventListener('click', function(e) {
     if (e.target.classList.contains('cat-link')) {
       const cat = e.target.getAttribute('data-cat');
       if(cat) openCategoryStats(cat);
     }
   });
+
+  // --------- GOAL (MAQSADLAR) BO'LIMI ---------
+  const goalName = document.getElementById('goalName');
+  const goalTarget = document.getElementById('goalTarget');
+  const addGoalBtn = document.getElementById('addGoalBtn');
+  const goalListDiv = document.getElementById('goalList');
+  const goalCurrency = document.getElementById('goalCurrency');
+  try {
+    const goalsRaw = localStorage.getItem('goal_list');
+    if (goalsRaw) goalList = JSON.parse(goalsRaw);
+  } catch (e) { goalList = []; }
+  function saveGoals() { localStorage.setItem('goal_list', JSON.stringify(goalList)); }
+
+  function renderGoalList() {
+    goalListDiv.innerHTML = '';
+    if (!goalList.length) {
+      goalListDiv.innerHTML = `<div style='text-align:center;color:var(--muted);margin-top:18px;'>Maqsadlar hali yo'q</div>`;
+      return;
+    }
+    goalList.forEach((goal, idx) => {
+      let current = goal.current || 0;
+      let percent = Math.min(100, Math.round(current / goal.target * 100));
+      let weekData = goal.progressHistory||[];
+      let haftalikQoshimcha = weekData.length > 1 ? weekData[weekData.length-1].amount - weekData[0].amount : current;
+      haftalikQoshimcha = haftalikQoshimcha || 0;
+      let haftadaKun = weekData.length>1 ? Math.round((new Date(weekData[weekData.length-1].date)-new Date(weekData[0].date))/86400000) : 7;
+      haftadaKun = haftadaKun<=0?1:haftadaKun;
+      let haftalikOrtacha = haftalikQoshimcha / haftadaKun;
+      let taxminQolgan = haftalikOrtacha>0 ? Math.ceil((goal.target-current)/haftalikOrtacha) : "-";
+      let taxminQolganText = haftalikOrtacha>0 ? `${taxminQolgan} kun (agar shu sur'atda davom etsa)` : "Hali prognoz yo'q";
+      let show = goal.show !== false;
+      let showText = show ? Number(current).toLocaleString('uz-UZ') : "****";
+      let eyeIcon = show ? "👁️" : "🙈";
+      let card = document.createElement('div');
+      card.className = "goal-card";
+      card.innerHTML = `
+        <div class="goal-title">${escapeHtml(goal.name)}</div>
+        <div class="goal-meta">
+          Maqsad: <b>${Number(goal.target).toLocaleString('uz-UZ')}</b> ${goal.currency}<br>
+          Yig'ilgan: <b class="goal-amount">${showText}</b>
+          <button class="goal-eye-btn" title="Ko'rsat/yashir" style="background:none;border:none;cursor:pointer;font-size:18px;vertical-align:middle;margin-left:4px;">${eyeIcon}</button> ${goal.currency}
+        </div>
+        <div class="goal-progress-bar">
+          <div class="goal-progress-inner" style="width:${percent}%;"></div>
+        </div>
+        <div class="goal-pct">${percent}%</div>
+        <div style="font-size:13px;margin-bottom:5px;">${taxminQolganText}</div>
+        <div class="goal-actions">
+          <input class="goal-add-amount" type="number" min="1" placeholder="Pul qo'shish">
+          <select class="goal-add-currency goal-currency-select">
+            <option value="UZS">so'm</option>
+            <option value="USD">$</option>
+            <option value="RUB">₽</option>
+          </select>
+          <button class="goal-add-btn">Pul qo'shish</button>
+          <button class="goal-remove-btn">O'chirish</button>
+        </div>
+      `;
+      // Eye event
+      const eyeBtn = card.querySelector('.goal-eye-btn');
+      eyeBtn.addEventListener('click', () => {
+        goal.show = !show;
+        saveGoals();
+        renderGoalList();
+      });
+      // Pul qo'shish
+      const addInput = card.querySelector('.goal-add-amount');
+      const addCur = card.querySelector('.goal-add-currency');
+      const addBtn = card.querySelector('.goal-add-btn');
+      addBtn.addEventListener('click', () => {
+        let val = Number(addInput.value);
+        let fromCur = addCur.value;
+        if (!val || val<=0) {
+          alert("To'g'ri pul miqdorini kiriting!");
+          return;
+        }
+        let addConverted = convert(val, fromCur, goal.currency);
+        goal.current = (goal.current||0)+addConverted;
+        if (!goal.progressHistory) goal.progressHistory = [];
+        goal.progressHistory.push({date: new Date().toISOString().slice(0,10), amount: goal.current});
+        saveGoals();
+        renderGoalList();
+      });
+      const removeBtn = card.querySelector('.goal-remove-btn');
+      removeBtn.addEventListener('click', () => {
+        if (confirm("Ushbu maqsadni o'chirishni istaysizmi?")) {
+          goalList.splice(idx,1);
+          saveGoals();
+          renderGoalList();
+        }
+      });
+      goalListDiv.appendChild(card);
+    });
+  }
+
+  addGoalBtn.addEventListener('click', () => {
+    const name = goalName.value.trim();
+    const target = Number(goalTarget.value.trim());
+    const currency = goalCurrency.value;
+    if (!name || !target || target<=0) {
+      alert("Narsa nomi va narxini to'g'ri kiriting!");
+      return;
+    }
+    goalList.push({
+      name,
+      target,
+      current: 0,
+      currency,
+      progressHistory: []
+    });
+    saveGoals();
+    goalName.value = '';
+    goalTarget.value = '';
+    renderGoalList();
+  });
+
+  renderGoalList();
 });
