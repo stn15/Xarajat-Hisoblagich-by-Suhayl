@@ -657,6 +657,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const addGoalBtn = document.getElementById('addGoalBtn');
   const goalListDiv = document.getElementById('goalList');
   const goalCurrency = document.getElementById('goalCurrency');
+addGoalBtn.addEventListener('click', addGoalFunction);
+addGoalBtn.addEventListener('touchend', addGoalFunction);
   try {
     const goalsRaw = localStorage.getItem('goal_list');
     if (goalsRaw) goalList = JSON.parse(goalsRaw);
