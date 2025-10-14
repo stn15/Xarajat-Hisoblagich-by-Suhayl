@@ -138,7 +138,7 @@ body.dark-mode select {
   background: #29293a; color: #cbd5e1;
 }
 .add-btn{
-  width:100%; margin-top:8px; padding:13px; border-radius:14px; border:none; cursor:pointer;
+  width:100%; margin-top:8px; min-width: 150px; padding:10px; border-radius:14px; border:none; cursor:pointer;
   font-weight:600; font-size:17px; color:#fff;
   background:linear-gradient(90deg,var(--accent1),var(--accent2));
   box-shadow:0 8px 24px rgba(124,58,237,0.16); transition: background 0.2s, box-shadow 0.2s;
