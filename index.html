@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Xarajat Hisoblagich</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" sizes="192x192" href="logo.png">
@@ -16,8 +16,10 @@
     <div class="splash-title">Xarajat Hisoblagich</div>
     <div class="splash-author">by Suhayl</div>
   </div>
+
   <div class="container">
     <div class="content">
+
       <!-- Sozlamalar sahifasi -->
       <div id="settingsPage" style="display:none; padding:22px;">
         <h2 style="text-align:center;">🔐 Sozlamalar</h2>
@@ -26,11 +28,14 @@
         <button id="removePinBtn" style="background:#ff6b6b; color:#fff; margin-top:8px;">PINni o‘chirish</button>
         <button id="closeSettingsBtn">⬅️ Ortga</button>
       </div>
+
       <!-- Sozlamalar tugmasi -->
       <button id="tabSettings">⚙️</button>
+
       <!-- Home Sahifa -->
       <div id="homePage">
         <h1>Xarajat Hisoblagich</h1>
+
         <div class="top-controls">
           <div>
             <select id="langSwitch">
@@ -46,26 +51,31 @@
           </div>
           <button id="themeSwitch" title="Rejim">🌙</button>
         </div>
+
         <div class="filters">
           <input id="search" type="text" placeholder="Qidiruv...">
           <select id="filterCategory">
             <option value="">Barchasi</option>
           </select>
         </div>
+
         <div class="inputs">
           <input id="name" type="text" placeholder="Nima oldingiz?">
           <input id="amount" type="number" placeholder="Summasi">
-          <input id="date" type="date" placeholder="Sana">
+          <input id="date" type="date">
           <select id="category"></select>
           <button class="add-btn" id="addBtn">➕ Qo'shish</button>
         </div>
+
         <div class="flex-row">
           <button id="addCategoryBtn">+ Kategoriya qo'shish</button>
           <span id="limitNotice"></span>
         </div>
+
         <div class="summary">Umumiy: <strong id="total">0</strong> <span id="currencyLabel">so'm</span></div>
         <ul id="list" aria-live="polite"></ul>
         <canvas id="expenseChart"></canvas>
+
         <!-- Modal kategoriya qo‘shish -->
         <div id="catModal">
           <div>
@@ -76,12 +86,14 @@
             <button id="closeCatModal">Bekor qilish</button>
           </div>
         </div>
+
         <div class="limit-row">
           <label for="limitInput">Oylik limit (UZS): </label>
           <input id="limitInput" type="number" min="0">
           <button id="limitSaveBtn">Saqlash</button>
         </div>
       </div>
+
       <!-- Diagramma Sahifa -->
       <div id="chartPage" style="display:none;">
         <h2 style="text-align:center;">📊 Statistikalar</h2>
@@ -103,6 +115,7 @@
           </div>
         </div>
       </div>
+
       <!-- Maqsadlar Sahifa -->
       <div id="goalPage" style="display:none;">
         <h2 style="text-align:center;">🎯 Maqsadlar</h2>
@@ -119,6 +132,7 @@
         <div id="goalList"></div>
       </div>
     </div>
+
     <!-- Pastki menyu -->
     <div class="bottom-nav">
       <button id="tabHome" class="active">🏠 Asosiy</button>
@@ -126,15 +140,57 @@
       <button id="tabGoal">🎯 Maqsad</button>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
+
+  <!-- 🔥 Firebase integratsiya -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAv-bBFrTPU0N7-iNW8U4jL5Igcvz8Z86Q",
+      authDomain: "xarajat-h.firebaseapp.com",
+      projectId: "xarajat-h",
+      storageBucket: "xarajat-h.firebasestorage.app",
+      messagingSenderId: "101856092661",
+      appId: "1:101856092661:web:4eca838bda6c025fef40bc",
+      measurementId: "G-9BN6ECD27D"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 🔹 Ma'lumot qo‘shish funksiyasi (misol uchun)
+    document.getElementById("addBtn").addEventListener("click", async () => {
+      const name = document.getElementById("name").value;
+      const amount = parseFloat(document.getElementById("amount").value || 0);
+      const date = document.getElementById("date").value;
+      if (!name || !amount) return alert("Ma’lumot to‘liq emas!");
+
+      await addDoc(collection(db, "xarajatlar"), {
+        name,
+        amount,
+        date,
+        createdAt: new Date().toISOString()
+      });
+
+      alert("✅ Ma’lumot bulutga saqlandi!");
+    });
+  </script>
+
+  <!-- Service Worker -->
   <script>
-    // Service Worker faqat http(s) yoki localhostda ishlaydi, file:// da emas!
-    if (location.protocol === "http:" || location.protocol === "https:" || location.hostname === "localhost") {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(() => console.log('Service Worker ulandi ✅'))
-          .catch(err => console.log('Xatolik:', err));
+    if (
+      location.protocol === "https:" ||
+      location.hostname === "localhost"
+    ) {
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then(() => console.log("Service Worker ulandi ✅"))
+          .catch(err => console.log("Xatolik:", err));
       }
     }
   </script>
