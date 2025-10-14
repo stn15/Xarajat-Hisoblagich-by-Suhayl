@@ -145,30 +145,38 @@
   <script src="app.js"></script>
 
   <!-- 🔥 Firebase integratsiya -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAv-bBFrTPU0N7-iNW8U4jL5Igcvz8Z86Q",
-      authDomain: "xarajat-h.firebaseapp.com",
-      projectId: "xarajat-h",
-      storageBucket: "xarajat-h.firebasestorage.app",
-      messagingSenderId: "101856092661",
-      appId: "1:101856092661:web:4eca838bda6c025fef40bc",
-      measurementId: "G-9BN6ECD27D"
-    };
+  // 🔹 Firebase config (seniki to‘g‘ri)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAv-bBFrTPU0N7-iNW8U4jL5Igcvz8Z86Q",
+    authDomain: "xarajat-h.firebaseapp.com",
+    projectId: "xarajat-h",
+    storageBucket: "xarajat-h.firebasestorage.app",
+    messagingSenderId: "101856092661",
+    appId: "1:101856092661:web:4eca838bda6c025fef40bc",
+    measurementId: "G-9BN6ECD27D"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  // 🔹 Firebase va Firestore ishga tushirish
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    // 🔹 Ma'lumot qo‘shish funksiyasi (misol uchun)
-    document.getElementById("addBtn").addEventListener("click", async () => {
-      const name = document.getElementById("name").value;
-      const amount = parseFloat(document.getElementById("amount").value || 0);
-      const date = document.getElementById("date").value;
-      if (!name || !amount) return alert("Ma’lumot to‘liq emas!");
+  // 🔹 Qo‘shish tugmasi bosilganda ma’lumotni Firestore’ga yozish
+  const addBtn = document.getElementById("addBtn");
+  addBtn.addEventListener("click", async () => {
+    const name = document.getElementById("name").value.trim();
+    const amount = parseFloat(document.getElementById("amount").value || 0);
+    const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
 
+    if (!name || !amount) {
+      alert("❗ Ma’lumot to‘liq emas!");
+      return;
+    }
+
+    try {
       await addDoc(collection(db, "xarajatlar"), {
         name,
         amount,
@@ -176,9 +184,25 @@
         createdAt: new Date().toISOString()
       });
 
-      alert("✅ Ma’lumot bulutga saqlandi!");
+      alert("✅ Ma’lumot muvaffaqiyatli saqlandi!");
+      document.getElementById("name").value = "";
+      document.getElementById("amount").value = "";
+      document.getElementById("date").value = "";
+    } catch (err) {
+      console.error("🔥 Xatolik:", err);
+      alert("⚠️ Ma’lumotni saqlab bo‘lmadi. Console’ni tekshiring.");
+    }
+  });
+
+  // 🔹 Saqlangan xarajatlarni olish (sinov uchun)
+  window.addEventListener("DOMContentLoaded", async () => {
+    const querySnapshot = await getDocs(collection(db, "xarajatlar"));
+    console.log("📂 Bulutdagi ma’lumotlar:");
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
     });
-  </script>
+  });
+</script>
 
   <!-- Service Worker -->
   <script>
@@ -195,4 +219,5 @@
     }
   </script>
 </body>
+
 </html>
