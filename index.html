@@ -144,65 +144,56 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
 
-  <!-- 🔥 Firebase integratsiya -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <!-- Firebase integratsiyasi: ilovadan "expenseSaved" event oladi va Firestore'ga yozadi -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // 🔹 Firebase config (seniki to‘g‘ri)
-  const firebaseConfig = {
-    apiKey: "AIzaSyAv-bBFrTPU0N7-iNW8U4jL5Igcvz8Z86Q",
-    authDomain: "xarajat-h.firebaseapp.com",
-    projectId: "xarajat-h",
-    storageBucket: "xarajat-h.firebasestorage.app",
-    messagingSenderId: "101856092661",
-    appId: "1:101856092661:web:4eca838bda6c025fef40bc",
-    measurementId: "G-9BN6ECD27D"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyAv-bBFrTPU0N7-iNW8U4jL5Igcvz8Z86Q",
+      authDomain: "xarajat-h.firebaseapp.com",
+      projectId: "xarajat-h",
+      storageBucket: "xarajat-h.firebasestorage.app",
+      messagingSenderId: "101856092661",
+      appId: "1:101856092661:web:4eca838bda6c025fef40bc",
+      measurementId: "G-9BN6ECD27D"
+    };
 
-  // 🔹 Firebase va Firestore ishga tushirish
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  // 🔹 Qo‘shish tugmasi bosilganda ma’lumotni Firestore’ga yozish
-  const addBtn = document.getElementById("addBtn");
-  addBtn.addEventListener("click", async () => {
-    const name = document.getElementById("name").value.trim();
-    const amount = parseFloat(document.getElementById("amount").value || 0);
-    const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
-
-    if (!name || !amount) {
-      alert("❗ Ma’lumot to‘liq emas!");
-      return;
-    }
-
-    try {
-      await addDoc(collection(db, "xarajatlar"), {
-        name,
-        amount,
-        date,
-        createdAt: new Date().toISOString()
-      });
-
-      alert("✅ Ma’lumot muvaffaqiyatli saqlandi!");
-      document.getElementById("name").value = "";
-      document.getElementById("amount").value = "";
-      document.getElementById("date").value = "";
-    } catch (err) {
-      console.error("🔥 Xatolik:", err);
-      alert("⚠️ Ma’lumotni saqlab bo‘lmadi. Console’ni tekshiring.");
-    }
-  });
-
-  // 🔹 Saqlangan xarajatlarni olish (sinov uchun)
-  window.addEventListener("DOMContentLoaded", async () => {
-    const querySnapshot = await getDocs(collection(db, "xarajatlar"));
-    console.log("📂 Bulutdagi ma’lumotlar:");
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
+    // Firestore ga push qilish: app ichidagi event orqali
+    window.addEventListener('expenseSaved', async (e) => {
+      const exp = e.detail;
+      if (!exp) return;
+      try {
+        await addDoc(collection(db, "xarajatlar"), {
+          id: exp.id,
+          name: exp.name,
+          amountUZS: Number(exp.amount), // stored in UZS in app
+          date: exp.date,
+          category: exp.category,
+          createdAt: new Date().toISOString()
+        });
+        console.log("Ma'lumot Firestore'ga yozildi:", exp);
+      } catch (err) {
+        console.error("Firestore yozishda xatolik:", err);
+      }
     });
-  });
-</script>
+
+    // Sinov uchun bulutdagi ma'lumotlarni consolega chiqarish (faqat load payt)
+    window.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "xarajatlar"));
+        console.log("📂 Bulutdagi ma’lumotlar:");
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+        });
+      } catch (err) {
+        console.warn("Firestore o'qishda xatolik:", err);
+      }
+    });
+  </script>
 
   <!-- Service Worker -->
   <script>
@@ -219,5 +210,4 @@
     }
   </script>
 </body>
-
 </html>
