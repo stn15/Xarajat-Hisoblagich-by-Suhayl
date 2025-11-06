@@ -7,45 +7,22 @@ const PRECACHE_URLS = [
   'manifest.json'
 ];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(PRECACHE_URLS);
-    })
-  );
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_URLS)));
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(key => {
-        if (key !== CACHE_NAME) return caches.delete(key);
-      })
-    ))
-  );
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => { if (k !== CACHE_NAME) return caches.delete(k); }))));
   self.clients.claim();
 });
 
-self.addEventListener('fetch', (event) => {
-  // Cache-first for app shell, network-first for other requests (like API)
-  const url = new URL(event.request.url);
-  if (PRECACHE_URLS.includes(url.pathname.replace(/^\//, ''))) {
-    event.respondWith(
-      caches.match(event.request).then(response => response || fetch(event.request))
-    );
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  // simple network-first for API; cache-first for app shell
+  if (PRECACHE_URLS.some(p => req.url.endsWith(p))) {
+    event.respondWith(caches.match(req).then(r => r || fetch(req)));
     return;
   }
-
-  // Fallback network-first, then cache
-  event.respondWith(
-    fetch(event.request).then(resp => {
-      // optionally cache GET responses
-      if (event.request.method === 'GET') {
-        const respClone = resp.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, respClone));
-      }
-      return resp;
-    }).catch(() => caches.match(event.request))
-  );
+  event.respondWith(fetch(req).then(resp => { if (req.method === 'GET') { caches.open(CACHE_NAME).then(cache => cache.put(req, resp.clone())); } return resp; }).catch(()=>caches.match(req)));
 });
