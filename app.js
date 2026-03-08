@@ -451,6 +451,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     delete it.deleted; delete it.deletedAt;
     expenses.push(it); save(); saveTrash(); renderList(); showNotification('Tiklash', `"${it.name}" tiklandi.`);
   }
+  // ---------- 
+  // notfications
+  //-----------
+  function checkBudget(total) {
+    const limit = localStorage.getItem('monthly_limit') || 1000000; // 1 mln limit
+    if (total > limit) {
+        // Bu bizning "Toast" bildirishnomamiz
+        showToast("⚠️ Diqqat! Oylik byudjetdan oshib ketdingiz!", "danger");
+    }
+}
 
   // ---------------------------
   // Trash modal
@@ -486,27 +496,76 @@ document.addEventListener('DOMContentLoaded', async () => {
     else if (Notification.permission !== "denied") Notification.requestPermission().then(p=> { if (p === "granted") new Notification(title, { body }); });
   }
 
+// ---------------------------
+  // Budgets (To'liq va professional versiya)
   // ---------------------------
-  // Budgets
-  // ---------------------------
-  function setBudgetForMonth(monthKey, amount, categoryBudgets = {}) {
-    budgets[monthKey] = budgets[monthKey] || { total:0, categories: {} };
-    budgets[monthKey].total = amount; budgets[monthKey].categories = categoryBudgets; saveBudgets();
+  
+  // 1. Limitni saqlash funksiyasi
+  function setBudgetForMonth() {
+    const amount = Number(limitInput.value);
+
+    if (!amount || amount <= 0) {
+      alert("Iltimos, to'g'ri oylik limit summasini kiriting!");
+      return;
+    }
+
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+    // Byudjetni saqlash (Notified false - yangi limit uchun qayta ogohlantirish imkoni)
+    budgets[monthKey] = { total: amount, categories: {}, notified: false };
+    saveBudgets();
+
+    alert(`Oylik limit muvaffaqiyatli o'rnatildi: ${formatNumberByCurrencyUZS(amount)} ${currency}`);
+    checkBudgets(); // Darhol UI ni yangilash
   }
+
+  // 2. Limitni tekshirish va ekranda ko'rsatish funksiyasi
   function checkBudgets() {
     const now = new Date();
     const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-    const monthBudget = budgets[monthKey] || null;
-    if (!monthBudget) return;
-    const monthTotalUZS = calcTotal(getMonthExpenses(expenses));
-    if (monthBudget.total > 0 && monthTotalUZS >= monthBudget.total) showNotification("Budjet tugadi", `Sizning oylik byudjetingiz ${formatNumberByCurrencyUZS(monthBudget.total)} ${currency} tugadi.`);
-    for (let cat of Object.keys(monthBudget.categories || {})) {
-      const catLimit = monthBudget.categories[cat];
-      const catSum = getMonthExpenses(expenses).filter(e=>e.category===cat).reduce((s,e)=>s + Number(e.amountUZS != null ? e.amountUZS : e.amount || 0),0);
-      if (catLimit > 0 && catSum >= catLimit) showNotification("Kategoriya byudjeti tugadi", `${cat} uchun belgilangan oylik limit oshdi.`);
+    const monthBudget = budgets[monthKey];
+    
+    // Limit yoqilganmi yoki o'chirilganmi tekshiramiz
+    const isEnabled = localStorage.getItem('limit_enabled') === 'true';
+    const toggleBtn = document.getElementById('limitToggle');
+    if (toggleBtn) toggleBtn.checked = isEnabled;
+
+    if (!isEnabled || !monthBudget || monthBudget.total <= 0) {
+      if (limitNotice) limitNotice.innerHTML = '';
+      return;
     }
+    
+    // ... (qolgan hisob-kitob kodlari o'sha-o'sha qoladi)
+    const monthTotalUZS = calcTotal(getMonthExpenses(expenses));
+    const limitAmountUZS = monthBudget.total;
+    const percentage = ((monthTotalUZS / limitAmountUZS) * 100).toFixed(1);
+    const isExceeded = monthTotalUZS >= limitAmountUZS;
+
+    // UI da o'zgarish (Ekranda rangli quti chiqadi)
+    if (limitNotice) {
+      limitNotice.innerHTML = `
+        <div class="limit-box" style="background: ${isExceeded ? 'rgba(255,107,107,0.1)' : 'rgba(76,175,80,0.1)'}; padding: 10px; border-radius: 8px; border: 1px solid ${isExceeded ? '#ff6b6b' : '#4caf50'}; margin-top:10px;">
+          <b>Limit:</b> ${percentage}% (${formatNumberByCurrencyUZS(monthTotalUZS)} / ${formatNumberByCurrencyUZS(limitAmountUZS)} ${currency})
+          ${isExceeded ? '<br>⚠️ <b>Limit tugadi!</b>' : ''}
+        </div>
+      `;
+    }
+    const limitToggle = document.getElementById('limitToggle');
+  if (limitToggle) {
+    limitToggle.addEventListener('change', (e) => {
+      localStorage.setItem('limit_enabled', e.target.checked);
+      checkBudgets(); // Holat o'zgarganda ekranni yangilash
+    });
   }
 
+    // Tizim bildirishnomasi (Notification)
+    if (isExceeded && !monthBudget.notified) {
+      showNotification("Byudjet tugadi!", `Siz belgilagan oylik limit (${formatNumberByCurrencyUZS(limitAmountUZS)} ${currency}) tugadi.`);
+      budgets[monthKey].notified = true; 
+      saveBudgets();
+    }
+  }
   // ---------------------------
   // Recurring engine
   // ---------------------------
@@ -725,8 +784,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   dateEl && dateEl.addEventListener('keydown', (ev)=>{ if (ev.key === 'Enter') addOrEditExpense(); });
 
   if (currencySwitch) currencySwitch.addEventListener('change', ()=> { currency = currencySwitch.value; localStorage.setItem(CUR_KEY, currency); renderList(); renderGoalList(); });
-  if (limitInput) limitInput.value = limit > 0 ? limit : '';
-  if (limitSaveBtn) limitSaveBtn.addEventListener('click', ()=> { limit = Number(limitInput.value) || 0; localStorage.setItem(LIMIT_KEY, limit); renderList(); });
+  // Hozirgi oyni aniqlash va eski yozilgan limitni inputga chiqarib qo'yish
+  if (limitInput) {
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    limitInput.value = (budgets[monthKey] && budgets[monthKey].total > 0) ? budgets[monthKey].total : '';
+}
+// Hozirgi oyni aniqlash va eski limitni inputga yuklash
+if (limitInput) {
+  const now = new Date();
+  const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  limitInput.value = (budgets[monthKey] && budgets[monthKey].total > 0) ? budgets[monthKey].total : '';
+}
+
+// Limitni saqlash tugmasi
+if (limitSaveBtn) {
+  limitSaveBtn.onclick = setBudgetForMonth;
+}
+
+// Toggle (dumaloq tugma) ni ulash
+const limitToggle = $('limitToggle');
+if (limitToggle) {
+  limitToggle.onchange = (e) => {
+    localStorage.setItem('limit_enabled', e.target.checked);
+    checkBudgets(); 
+  };
+}
 
   if (addCatBtn) addCatBtn.addEventListener('click', ()=> { if (catModal) { catModal.classList.add('active'); newCatName && (newCatName.value=''); newCatEmoji && (newCatEmoji.value=''); } });
   if (closeCatModal) closeCatModal.addEventListener('click', ()=> catModal && catModal.classList.remove('active'));

@@ -89,6 +89,14 @@
         <div class="summary">Umumiy: <strong id="total">0</strong> <span id="currencyLabel">so'm</span></div>
         <ul id="list" aria-live="polite"></ul>
         <canvas id="expenseChart"></canvas>
+
+        <div class="limit-toggle-container" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+          <span>Oylik limitni yoqish</span>
+          <label class="switch">
+            <input type="checkbox" id="limitToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
                       <!-- inside .top-controls -->
 <button id="exportJsonBtn" class="small-ctrl">⬇️ Export JSON</button>
 <button id="exportCsvBtn" class="small-ctrl">⬇️ Export CSV</button>
