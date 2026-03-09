@@ -7,10 +7,10 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" sizes="192x192" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
-  <meta name="theme-color" content="#ffffff">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- SPLASH SCREEN -->
   <div class="splash" id="splash">
     <img src="logo.png" alt="Logo" class="logo-anim" />
     <div class="splash-title">Xarajat Hisoblagich</div>
@@ -19,137 +19,197 @@
 
   <div class="container">
     <div class="content">
-      <!-- PIN modal (non-blocking) - add under splash or at top of <body> -->
-<div id="pinModal" class="pin-modal" style="display:none;">
-  <div class="pin-modal-inner">
-    <h3>Ilovaga kirish uchun PIN</h3>
-    <input id="pinModalInput" type="password" placeholder="PIN kodni kiriting" maxlength="8" />
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
-      <button id="pinCancelBtn" class="small-ctrl">Bekor</button>
-      <button id="pinSubmitBtn" class="small-ctrl">Tasdiqlash</button>
-    </div>
-    <div style="font-size:12px;color:var(--muted);margin-top:8px;">Agar PIN yo‘q bo‘lsa, Sozlamalardan yarating.</div>
-  </div>
-</div>
+      <!-- PIN MODAL -->
+      <div id="pinModal" class="pin-modal">
+        <div class="pin-modal-inner">
+          <h3>Ilovaga kirish uchun PIN</h3>
+          <input id="pinModalInput" type="password" placeholder="PIN kodni kiriting" maxlength="8" />
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
+            <button id="pinCancelBtn" class="small-ctrl">Bekor</button>
+            <button id="pinSubmitBtn" class="small-ctrl">Tasdiqlash</button>
+          </div>
+        </div>
+      </div>
 
-      <!-- Sozlamalar sahifasi -->
+      <!-- SETTINGS PAGE -->
       <div id="settingsPage" style="display:none; padding:22px;">
-        <h2 style="text-align:center;">🔐 Sozlamalar</h2>
+        <h2>🔐 Sozlamalar</h2>
         <input id="pinInput" type="password" placeholder="PIN kod kiriting">
-        <button id="savePinBtn">PIN saqlash</button>
-        <button id="removePinBtn" style="background:#ff6b6b; color:#fff; margin-top:8px;">PINni o‘chirish</button>
+        <button id="savePinBtn" class="add-btn">PIN saqlash</button>
+        <button id="removePinBtn" class="small-ctrl" style="background:#ef4444; color:#fff; margin-top:8px;">PINni o'chirish</button>
         <button id="closeSettingsBtn">⬅️ Ortga</button>
       </div>
 
-      <!-- Sozlamalar tugmasi -->
-      <button id="tabSettings">⚙️</button>
-
-      <!-- Home Sahifa -->
+      <!-- HOME PAGE -->
       <div id="homePage">
-        <h1>Xarajat Hisoblagich</h1>
-
-        <div class="top-controls">
-
-          <div>
-            <select id="langSwitch">
-              <option value="uz">uzb</option>
-              <option value="ru">rus</option>
-              <option value="en">eng</option>
-            </select>
-            <select id="currencySwitch">
-              <option value="UZS">so'm</option>
-              <option value="USD">$</option>
-              <option value="RUB">₽</option>
-            </select>
+        <!-- TOP HEADER WITH MENU -->
+        <div class="top-header">
+          <!-- LEFT: MENU BUTTON -->
+          <div class="menu-container">
+            <button id="menuBtn" class="menu-btn">☰</button>
+            
+            <!-- DROPDOWN MENU -->
+            <div id="dropdownMenu" class="dropdown-menu">
+              <div class="menu-section">
+                <button id="profileBtn" class="menu-item">👤 Profil (Kelajakda)</button>
+                <button id="aboutBtn" class="menu-item">ℹ️ Biz haqida</button>
+              </div>
+              
+              <div class="menu-divider"></div>
+              
+              <div class="menu-section">
+                <div class="menu-label">Til</div>
+                <button class="lang-option" data-lang="uz">🇺🇿 Uzbek</button>
+                <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
+                <button class="lang-option" data-lang="en">🌍 English</button>
+              </div>
+            </div>
           </div>
-          <button id="themeSwitch" title="Rejim">🌙</button>
+
+          <!-- CENTER: TITLE -->
+          <h1 style="text-align: center; margin: 0; font-size: 20px;">Xarajat Hisoblagich</h1>
+
+          <!-- RIGHT: CONTROLS -->
+          <div class="top-controls">
+            <!-- CURRENCY SELECT - MINIMAL -->
+            <select id="currencySwitch" class="currency-select">
+              <option value="UZS">UZS</option>
+              <option value="USD">USD</option>
+              <option value="RUB">RUB</option>
+            </select>
+
+            <!-- THEME SWITCH -->
+            <button id="themeSwitch" class="theme-btn">🌙</button>
+
+            <!-- SETTINGS BUTTON -->
+            <button id="tabSettings" class="settings-btn">⚙️</button>
+          </div>
         </div>
 
+        <!-- SUMMARY CARD -->
+        <div class="summary">
+          <div class="summary-label">Sizning balansingiz</div>
+          <strong id="total">0</strong>
+          <span id="currencyLabel">so'm</span>
+        </div>
+
+        <!-- MONTHLY LIMIT SECTION (NEW DESIGN) -->
+        <div class="monthly-limit-card">
+          <div class="limit-header">
+            <span class="limit-label">Oylik Limit</span>
+            <div class="limit-controls">
+              <input type="number" id="limitInput" class="limit-input" placeholder="UZS">
+              <button id="limitSaveBtn" class="limit-save-btn">Saqlash</button>
+              <label class="limit-toggle">
+                <input type="checkbox" id="limitToggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div id="limitNotice" class="limit-notice"></div>
+        </div>
+
+        <!-- CATEGORY CARDS GRID -->
+        <div class="category-section">
+          <div class="category-label">Oxirgi xarajatlar bo'yicha kategoriyalar</div>
+          <div class="category-grid">
+            <div class="cat-card food">🍔 Ovqat</div>
+            <div class="cat-card transport">🚗 Transport</div>
+            <div class="cat-card utilities">⚡ Kommunal</div>
+            <div class="cat-card shopping">🛍️ Bozorlik</div>
+          </div>
+        </div>
+
+        <!-- INPUTS SECTION -->
+        <div class="inputs">
+          <input id="name" type="text" placeholder="Nima oldingiz?">
+          <input id="amount" type="number" placeholder="Summasi">
+          <select id="itemCurrency">
+            <option value="UZS">UZS</option>
+            <option value="USD">USD</option>
+            <option value="RUB">RUB</option>
+          </select>
+          <input id="date" type="date">
+          <select id="category"></select>
+          <button class="add-btn" id="addBtn">➕ Qo'shish</button>
+        </div>
+
+        <!-- FILTERS -->
         <div class="filters">
           <input id="search" type="text" placeholder="Qidiruv...">
           <select id="filterCategory">
             <option value="">Barchasi</option>
           </select>
         </div>
-        
 
-        <div class="inputs">
-          <input id="name" type="text" placeholder="Nima oldingiz?">
-          <input id="amount" type="number" placeholder="Summasi">
-          <input id="date" type="date">
-          <select id="category"></select>
-          <button class="add-btn" id="addBtn">➕ Qo'shish</button>
+        <!-- ACTION BUTTONS -->
+        <div class="action-buttons">
+          <button id="addCategoryBtn" class="small-ctrl">+ Kategoriya</button>
+          <button id="exportJsonBtn" class="small-ctrl">⬇️ JSON</button>
+          <button id="exportCsvBtn" class="small-ctrl">⬇️ CSV</button>
+          <button id="importBtn" class="small-ctrl">⬆️ Import</button>
+          <button id="trashBtn" class="small-ctrl">🗑️ Trash</button>
+          <button id="recurringBtn" class="small-ctrl">🔁 Recurring</button>
         </div>
+        <input id="importFile" type="file" accept=".json,.csv" style="display:none;" />
 
-        <div class="flex-row">
-          <button id="addCategoryBtn">+ Kategoriya qo'shish</button>
-          <span id="limitNotice"></span>
-        </div>
-
-        <div class="summary">Umumiy: <strong id="total">0</strong> <span id="currencyLabel">so'm</span></div>
+        <!-- EXPENSES LIST -->
         <ul id="list" aria-live="polite"></ul>
+
+        <!-- CHART -->
         <canvas id="expenseChart"></canvas>
 
-        <div class="limit-toggle-container" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-          <span>Oylik limitni yoqish</span>
-          <label class="switch">
-            <input type="checkbox" id="limitToggle">
-            <span class="slider round"></span>
-          </label>
-        </div>
-                      <!-- inside .top-controls -->
-<button id="exportJsonBtn" class="small-ctrl">⬇️ Export JSON</button>
-<button id="exportCsvBtn" class="small-ctrl">⬇️ Export CSV</button>
-<button id="importBtn" class="small-ctrl">⬆️ Import</button>
-<input id="importFile" type="file" accept=".json,.csv" style="display:none;" />
-<button id="recurringBtn" class="small-ctrl">🔁 Recurring</button>
-<button id="budgetBtn" class="small-ctrl">💰 Budgets</button>
-<button id="trashBtn" class="small-ctrl">🗑️ Trash</button>
-
-        <!-- Modal kategoriya qo‘shish -->
+        <!-- MODALS -->
         <div id="catModal">
           <div>
-            <div>Kategoriya qo'shish</div>
+            <h3>Kategoriya qo'shish</h3>
             <input id="newCatName" type="text" placeholder="Kategoriya nomi">
             <input id="newCatEmoji" type="text" maxlength="2" placeholder="Emoji">
-            <button id="saveCatBtn">Saqlash</button>
-            <button id="closeCatModal">Bekor qilish</button>
+            <button id="saveCatBtn" class="add-btn">Saqlash</button>
+            <button id="closeCatModal" class="small-ctrl">Bekor</button>
           </div>
         </div>
 
-        <div class="limit-row">
-          <label for="limitInput">Oylik limit (UZS): </label>
-          <input id="limitInput" type="number" min="0">
-          <button id="limitSaveBtn">Saqlash</button>
+        <div id="catStatsModal">
+          <div>
+            <div id="catStatsTitle"></div>
+            <div id="catStatsInfo"></div>
+            <canvas id="catStatsChart"></canvas>
+            <button id="closeCatStatsModal" class="small-ctrl">Yopish</button>
+          </div>
+        </div>
+
+        <!-- ABOUT MODAL -->
+        <div id="aboutModal" class="modal">
+          <div class="modal-content">
+            <button id="closeAboutBtn" class="modal-close">✕</button>
+            <h2>Biz haqida</h2>
+            <p><b>Xarajat Hisoblagich</b> - Sizning kunlik xarajatlarini kuzatish uchun qulay vosita.</p>
+            <p><b>Ishlab chiquvchi:</b> Suhayl</p>
+            <p><b>Versiya:</b> 1.0.0</p>
+            <p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">© 2026 Xarajat Hisoblagich. Barcha huquqlar himoyalangan.</p>
+          </div>
         </div>
       </div>
-      <!-- Diagramma Sahifa -->
+
+      <!-- STATS PAGE -->
       <div id="chartPage" style="display:none;">
-        <h2 style="text-align:center;">📊 Statistikalar</h2>
+        <h2>📊 Statistikalar</h2>
         <div class="stats-nav">
           <button id="showTodayBtn">Bugun</button>
           <button id="showYesterdayBtn">Kecha</button>
           <button id="show7DaysBtn">7 kunlik</button>
         </div>
-        <div id="statDate" style="text-align:center; margin-bottom:12px;"></div>
+        <div id="statDate"></div>
         <canvas id="statsChart"></canvas>
         <div id="statsList"></div>
-        <!-- Kategoriya statistikasi modal -->
-        <div id="catStatsModal">
-          <div>
-            <div id="catStatsTitle" style="font-weight:700;font-size:19px;"></div>
-            <div id="catStatsInfo"></div>
-            <canvas id="catStatsChart" style="margin-top:20px;max-width:340px;"></canvas>
-            <button id="closeCatStatsModal" style="margin-top:12px;">Yopish</button>
-          </div>
-        </div>
       </div>
 
-      <!-- Maqsadlar Sahifa -->
+      <!-- GOALS PAGE -->
       <div id="goalPage" style="display:none;">
-        <h2 style="text-align:center;">🎯 Maqsadlar</h2>
+        <h2>🎯 Maqsadlar</h2>
         <div class="goal-add-section">
-          <input id="goalName" type="text" placeholder="Pul yig'moqchi bo'lgan narsangiz nomi">
+          <input id="goalName" type="text" placeholder="Maqsad nomi">
           <input id="goalTarget" type="number" placeholder="Narxi">
           <select id="goalCurrency" class="goal-currency-select">
             <option value="UZS">so'm</option>
@@ -162,82 +222,80 @@
       </div>
     </div>
 
-    <!-- Pastki menyu -->
+    <!-- BOTTOM NAVIGATION -->
     <div class="bottom-nav">
       <button id="tabHome" class="active">🏠 Asosiy</button>
-      <button id="tabChart">📊 Diagramma</button>
-      <button id="tabGoal">🎯 Maqsad</button>
+      <button id="tabChart">📊 Statistika</button>
+      <button id="tabGoal">🎯 Maqsadlar</button>
     </div>
   </div>
 
+  <!-- TOAST AREA -->
+  <div id="xh-toast-area"></div>
+
+  <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
 
-<!-- 🔥 Firebase integratsiya -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // 🔹 Firebase config (seniki to‘g‘ri)
-  const firebaseConfig = {
-    apiKey: "AIzaSyAv-bBFrTPU0N7-iNW8U4jL5Igcvz8Z86Q",
-    authDomain: "xarajat-h.firebaseapp.com",
-    projectId: "xarajat-h",
-    storageBucket: "xarajat-h.firebasestorage.app",
-    messagingSenderId: "101856092661",
-    appId: "1:101856092661:web:4eca838bda6c025fef40bc",
-    measurementId: "G-9BN6ECD27D"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyAv-bBFrTPU0N7-iNW8U4jL5Igcvz8Z86Q",
+      authDomain: "xarajat-h.firebaseapp.com",
+      projectId: "xarajat-h",
+      storageBucket: "xarajat-h.firebasestorage.app",
+      messagingSenderId: "101856092661",
+      appId: "1:101856092661:web:4eca838bda6c025fef40bc",
+      measurementId: "G-9BN6ECD27D"
+    };
 
-  // 🔹 Firebase va Firestore ishga tushirish
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  // 🔹 Qo‘shish tugmasi bosilganda ma’lumotni Firestore’ga yozish
-  const addBtn = document.getElementById("addBtn");
-  addBtn.addEventListener("click", async () => {
-    const name = document.getElementById("name").value.trim();
-    const amount = parseFloat(document.getElementById("amount").value || 0);
-    const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
+    const addBtn = document.getElementById("addBtn");
+    addBtn.addEventListener("click", async () => {
+      const name = document.getElementById("name").value.trim();
+      const amount = parseFloat(document.getElementById("amount").value || 0);
+      const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
 
-    if (!name || !amount) {
-      alert("❗ Ma’lumot to‘liq emas!");
-      return;
-    }
+      if (!name || !amount) {
+        alert("❗ Ma'lumot to'liq emas!");
+        return;
+      }
 
-    try {
-      await addDoc(collection(db, "xarajatlar"), {
-        name,
-        amount,
-        date,
-        createdAt: new Date().toISOString()
-      });
+      try {
+        await addDoc(collection(db, "xarajatlar"), {
+          name,
+          amount,
+          date,
+          createdAt: new Date().toISOString()
+        });
 
-      alert("✅ Ma’lumot muvaffaqiyatli saqlandi!");
-      document.getElementById("name").value = "";
-      document.getElementById("amount").value = "";
-      document.getElementById("date").value = "";
-    } catch (err) {
-      console.error("🔥 Xatolik:", err);
-      alert("⚠️ Ma’lumotni saqlab bo‘lmadi. Console’ni tekshiring.");
-    }
-  });
-
-  // 🔹 Saqlangan xarajatlarni olish (sinov uchun)
-  window.addEventListener("DOMContentLoaded", async () => {
-    const querySnapshot = await getDocs(collection(db, "xarajatlar"));
-    console.log("📂 Bulutdagi ma’lumotlar:");
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
+        alert("✅ Ma'lumot muvaffaqiyatli saqlandi!");
+        document.getElementById("name").value = "";
+        document.getElementById("amount").value = "";
+        document.getElementById("date").value = "";
+      } catch (err) {
+        console.error("🔥 Xatolik:", err);
+        alert("⚠️ Ma'lumotni saqlab bo'lmadi.");
+      }
     });
-  });
-</script>
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      const querySnapshot = await getDocs(collection(db, "xarajatlar"));
+      console.log("📂 Bulutdagi ma'lumotlar:");
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+      });
+    });
+  </script>
+
   <!-- Service Worker -->
   <script>
-    if (
-      location.protocol === "https:" ||
-      location.hostname === "localhost"
-    ) {
+    if (location.protocol === "https:" || location.hostname === "localhost") {
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
           .register("service-worker.js")
