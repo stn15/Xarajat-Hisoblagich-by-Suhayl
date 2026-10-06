@@ -1,308 +1,164 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Xarajat Hisoblagich</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" sizes="192x192" href="logo.png">
-  <link rel="apple-touch-icon" href="logo.png">
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Xarajat Hisoblagich</title>
+<meta name="theme-color" content="#1b2a3a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- SPLASH SCREEN -->
-  <div class="splash" id="splash">
-    <img src="logo.png" alt="Logo" class="logo-anim" />
-    <div class="splash-title">Xarajat Hisoblagich</div>
-    <div class="splash-author">by Suhayl</div>
-  </div>
+<div class="splash" id="splash"><img src="logo.png" alt="" class="logo-anim"><div class="splash-title">Xarajat Hisoblagich</div><div class="splash-author">by Suhayl</div></div>
 
-  <div class="container">
-    <div class="content">
-      <!-- PIN MODAL -->
-      <div id="pinModal" class="pin-modal">
-        <div class="pin-modal-inner">
-          <h3>Ilovaga kirish uchun PIN</h3>
-          <input id="pinModalInput" type="password" placeholder="PIN kodni kiriting" maxlength="8" />
-          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px;">
-            <button id="pinCancelBtn" class="small-ctrl">Bekor</button>
-            <button id="pinSubmitBtn" class="small-ctrl">Tasdiqlash</button>
-          </div>
-        </div>
-      </div>
+<div id="pinModal" class="overlay"><div class="sheet">
+  <h3 data-i18n="pinTitle"></h3>
+  <input id="pinModalInput" type="password" inputmode="numeric" maxlength="8">
+  <div id="pinError" class="note bad"></div>
+  <button id="pinSubmitBtn" class="btn" data-i18n="confirm"></button>
+</div></div>
 
-      <!-- SETTINGS PAGE -->
-      <div id="settingsPage" style="display:none; padding:22px;">
-        <h2>🔐 Sozlamalar</h2>
-        <input id="pinInput" type="password" placeholder="PIN kod kiriting">
-        <button id="savePinBtn" class="add-btn">PIN saqlash</button>
-        <button id="removePinBtn" class="small-ctrl" style="background:#ef4444; color:#fff; margin-top:8px;">PINni o'chirish</button>
-        <button id="closeSettingsBtn">⬅️ Ortga</button>
-      </div>
-
-      <!-- HOME PAGE -->
-      <div id="homePage">
-        <!-- TOP HEADER WITH MENU -->
-        <div class="top-header">
-          <!-- LEFT: MENU BUTTON -->
-          <div class="menu-container">
-            <button id="menuBtn" class="menu-btn">☰</button>
-            
-            <!-- DROPDOWN MENU -->
-            <div id="dropdownMenu" class="dropdown-menu">
-              <div class="menu-section">
-                <button id="profileBtn" class="menu-item">👤 Profil (Kelajakda)</button>
-                <button id="aboutBtn" class="menu-item">ℹ️ Biz haqida</button>
-              </div>
-              
-              <div class="menu-divider"></div>
-              
-              <div class="menu-section">
-                <div class="menu-label">Til</div>
-                <button class="lang-option" data-lang="uz">🇺🇿 Uzbek</button>
-                <button class="lang-option" data-lang="ru">🇷🇺 Русский</button>
-                <button class="lang-option" data-lang="en">🌍 English</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- CENTER: TITLE -->
-          <h1 style="text-align: center; margin: 0; font-size: 20px;">Xarajat Hisoblagich</h1>
-
-          <!-- RIGHT: CONTROLS -->
-          <div class="top-controls">
-            <!-- CURRENCY SELECT - MINIMAL -->
-            <select id="currencySwitch" class="currency-select">
-              <option value="UZS">UZS</option>
-              <option value="USD">USD</option>
-              <option value="RUB">RUB</option>
-            </select>
-
-            <!-- THEME SWITCH -->
-            <button id="themeSwitch" class="theme-btn">🌙</button>
-
-            <!-- SETTINGS BUTTON -->
-            <button id="tabSettings" class="settings-btn">⚙️</button>
-          </div>
-        </div>
-
-        <!-- SUMMARY CARD -->
-        <div class="summary">
-          <div class="summary-label">Sizning balansingiz</div>
-          <strong id="total">0</strong>
-          <span id="currencyLabel">so'm</span>
-        </div>
-
-        <!-- MONTHLY LIMIT SECTION (NEW DESIGN) -->
-        <div class="monthly-limit-card">
-          <div class="limit-header">
-            <span class="limit-label">Oylik Limit</span>
-            <div class="limit-controls">
-              <input type="number" id="limitInput" class="limit-input" placeholder="UZS">
-              <button id="limitSaveBtn" class="limit-save-btn">Saqlash</button>
-              <label class="limit-toggle">
-                <input type="checkbox" id="limitToggle">
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-          </div>
-          <div id="limitNotice" class="limit-notice"></div>
-        </div>
-
-        <!-- CATEGORY CARDS GRID -->
-        <div class="category-section">
-          <div class="category-label">Oxirgi xarajatlar bo'yicha kategoriyalar</div>
-          <div class="category-grid">
-            <div class="cat-card food">🍔 Ovqat</div>
-            <div class="cat-card transport">🚗 Transport</div>
-            <div class="cat-card utilities">⚡ Kommunal</div>
-            <div class="cat-card shopping">🛍️ Bozorlik</div>
-          </div>
-        </div>
-
-        <!-- INPUTS SECTION -->
-        <div class="inputs">
-          <input id="name" type="text" placeholder="Nima oldingiz?">
-          <input id="amount" type="number" placeholder="Summasi">
-          <select id="itemCurrency">
-            <option value="UZS">UZS</option>
-            <option value="USD">USD</option>
-            <option value="RUB">RUB</option>
-          </select>
-          <input id="date" type="date">
-          <select id="category"></select>
-          <button class="add-btn" id="addBtn">➕ Qo'shish</button>
-        </div>
-
-        <!-- FILTERS -->
-        <div class="filters">
-          <input id="search" type="text" placeholder="Qidiruv...">
-          <select id="filterCategory">
-            <option value="">Barchasi</option>
-          </select>
-        </div>
-
-        <!-- ACTION BUTTONS -->
-        <div class="action-buttons">
-          <button id="addCategoryBtn" class="small-ctrl">+ Kategoriya</button>
-          <button id="exportJsonBtn" class="small-ctrl">⬇️ JSON</button>
-          <button id="exportCsvBtn" class="small-ctrl">⬇️ CSV</button>
-          <button id="importBtn" class="small-ctrl">⬆️ Import</button>
-          <button id="trashBtn" class="small-ctrl">🗑️ Trash</button>
-          <button id="recurringBtn" class="small-ctrl">🔁 Recurring</button>
-        </div>
-        <input id="importFile" type="file" accept=".json,.csv" style="display:none;" />
-
-        <!-- EXPENSES LIST -->
-        <ul id="list" aria-live="polite"></ul>
-
-        <!-- CHART -->
-        <canvas id="expenseChart"></canvas>
-
-        <!-- MODALS -->
-        <div id="catModal">
-          <div>
-            <h3>Kategoriya qo'shish</h3>
-            <input id="newCatName" type="text" placeholder="Kategoriya nomi">
-            <input id="newCatEmoji" type="text" maxlength="2" placeholder="Emoji">
-            <button id="saveCatBtn" class="add-btn">Saqlash</button>
-            <button id="closeCatModal" class="small-ctrl">Bekor</button>
-          </div>
-        </div>
-
-        <div id="catStatsModal">
-          <div>
-            <div id="catStatsTitle"></div>
-            <div id="catStatsInfo"></div>
-            <canvas id="catStatsChart"></canvas>
-            <button id="closeCatStatsModal" class="small-ctrl">Yopish</button>
-          </div>
-        </div>
-
-        <!-- ABOUT MODAL -->
-        <div id="aboutModal" class="modal">
-          <div class="modal-content">
-            <button id="closeAboutBtn" class="modal-close">✕</button>
-            <h2>Biz haqida</h2>
-            <p><b>Xarajat Hisoblagich</b> - Sizning kunlik xarajatlarini kuzatish uchun qulay vosita.</p>
-            <p><b>Ishlab chiquvchi:</b> Suhayl</p>
-            <p><b>Versiya:</b> 1.0.0</p>
-            <p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">© 2026 Xarajat Hisoblagich. Barcha huquqlar himoyalangan.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- STATS PAGE -->
-      <div id="chartPage" style="display:none;">
-        <h2>📊 Statistikalar</h2>
-        <div class="stats-nav">
-          <button id="showTodayBtn">Bugun</button>
-          <button id="showYesterdayBtn">Kecha</button>
-          <button id="show7DaysBtn">7 kunlik</button>
-        </div>
-        <div id="statDate"></div>
-        <canvas id="statsChart"></canvas>
-        <div id="statsList"></div>
-      </div>
-
-      <!-- GOALS PAGE -->
-      <div id="goalPage" style="display:none;">
-        <h2>🎯 Maqsadlar</h2>
-        <div class="goal-add-section">
-          <input id="goalName" type="text" placeholder="Maqsad nomi">
-          <input id="goalTarget" type="number" placeholder="Narxi">
-          <select id="goalCurrency" class="goal-currency-select">
-            <option value="UZS">so'm</option>
-            <option value="USD">$</option>
-            <option value="RUB">₽</option>
-          </select>
-          <button id="addGoalBtn" class="add-btn">+ Maqsad qo'shish</button>
-        </div>
-        <div id="goalList"></div>
-      </div>
-    </div>
-
-    <!-- BOTTOM NAVIGATION -->
-    <div class="bottom-nav">
-      <button id="tabHome" class="active">🏠 Asosiy</button>
-      <button id="tabChart">📊 Statistika</button>
-      <button id="tabGoal">🎯 Maqsadlar</button>
+<header class="top">
+  <div class="menu-wrap">
+    <button id="menuBtn" class="icon-btn">☰</button>
+    <div id="dropdownMenu" class="dropdown">
+      <button id="aboutBtn" data-i18n="about"></button>
+      <div class="sep"></div>
+      <button data-lang="uz">🇺🇿 O'zbekcha</button>
+      <button data-lang="ru">🇷🇺 Русский</button>
+      <button data-lang="en">🇬🇧 English</button>
     </div>
   </div>
+  <h1>Xarajat Hisoblagich</h1>
+  <div class="top-r">
+    <select id="currencySwitch"><option>UZS</option><option>USD</option><option>RUB</option></select>
+    <button id="themeSwitch" class="icon-btn">🌙</button>
+    <button id="settingsBtn" class="icon-btn">⚙️</button>
+  </div>
+</header>
 
-  <!-- TOAST AREA -->
-  <div id="xh-toast-area"></div>
+<main>
+<section id="page-home" class="page active">
+  <div class="hero"><small data-i18n="balance"></small><strong id="total">0</strong><div id="monthLine" class="month-line"></div></div>
+  <div class="card">
+    <div class="row between"><b data-i18n="limitTitle"></b><label class="switch"><input type="checkbox" id="limitToggle"><span></span></label></div>
+    <div class="row"><input type="number" id="limitInput" placeholder="UZS" inputmode="decimal"><button id="limitSaveBtn" class="btn sm" data-i18n="save"></button></div>
+    <div class="bar"><i id="limitBar"></i></div><div id="limitNotice" class="note"></div>
+  </div>
+  <div id="catLimits" class="card"></div>
+  <div class="card">
+    <b data-i18n="addExpense"></b>
+    <div class="row"><input id="quick" data-i18n-ph="quickPh"><button id="quickBtn" class="btn sm">⚡</button></div>
+    <input id="name" data-i18n-ph="namePh">
+    <div class="row"><input id="amount" type="number" inputmode="decimal" data-i18n-ph="amountPh"><select id="itemCurrency"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
+    <div class="row"><input id="date" type="date"><select id="category"></select><button id="addCatBtn" class="btn sm ghost">＋</button><button id="manageCatBtn" class="btn sm ghost">⚙️</button></div>
+    <button id="addBtn" class="btn" data-i18n="add"></button>
+  </div>
+  <div class="row"><input id="search" data-i18n-ph="searchPh"><select id="filterCategory"></select></div>
+  <ul id="list"></ul>
+  <div class="card" id="chartCard"><canvas id="expenseChart"></canvas></div>
+</section>
 
-  <!-- SCRIPTS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js"></script>
+<section id="page-income" class="page">
+  <div class="hero income"><small data-i18n="incomeThisMonth"></small><strong id="incTotal">0</strong><div id="incMonthName" class="month-line"></div></div>
+  <div class="card">
+    <b data-i18n="incomeTitle"></b>
+    <div class="row"><input id="incAmount" type="number" inputmode="decimal" data-i18n-ph="amountPh"><select id="incCurrency"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
+    <input id="incNote" data-i18n-ph="noteOpt">
+    <input id="incDate" type="date">
+    <button id="addIncBtn" class="btn" data-i18n="addIncome"></button>
+  </div>
+  <ul id="incList"></ul>
+</section>
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<section id="page-stats" class="page">
+  <div class="tabs">
+    <button data-p="month" data-i18n="tabMonth"></button><button data-p="today" data-i18n="tabToday"></button>
+    <button data-p="yesterday" data-i18n="tabYest"></button><button data-p="week" data-i18n="tab7"></button>
+  </div>
+  <div id="statDate" class="note"></div>
+  <div id="statCards" class="stat-grid"></div>
+  <div id="statInsights" class="card"></div>
+  <div class="card"><canvas id="statsChart"></canvas></div>
+  <div id="statsList" class="card"></div>
+</section>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAv-bBFrTPU0N7-iNW8U4jL5Igcvz8Z86Q",
-      authDomain: "xarajat-h.firebaseapp.com",
-      projectId: "xarajat-h",
-      storageBucket: "xarajat-h.firebasestorage.app",
-      messagingSenderId: "101856092661",
-      appId: "1:101856092661:web:4eca838bda6c025fef40bc",
-      measurementId: "G-9BN6ECD27D"
-    };
+<section id="page-goals" class="page">
+  <div class="card">
+    <b data-i18n="goalsTitle"></b>
+    <input id="goalName" data-i18n-ph="goalNamePh">
+    <div class="row"><input id="goalTarget" type="number" inputmode="decimal" data-i18n-ph="goalPricePh"><select id="goalCurrency"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
+    <button id="addGoalBtn" class="btn" data-i18n="addGoal"></button>
+  </div>
+  <div id="goalList"></div>
+</section>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+<section id="page-settings" class="page">
+  <div class="card">
+    <b data-i18n="pinSection"></b>
+    <input id="pinInput" type="password" inputmode="numeric" maxlength="8" data-i18n-ph="pinPh">
+    <div class="row"><button id="savePinBtn" class="btn" data-i18n="savePin"></button><button id="removePinBtn" class="btn ghost" data-i18n="removePin"></button></div>
+  </div>
+  <div class="card">
+    <b data-i18n="recTitle"></b>
+    <input id="recName" data-i18n-ph="namePh">
+    <div class="row"><input id="recAmount" type="number" inputmode="decimal" data-i18n-ph="amountPh"><select id="recCur"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
+    <div class="row"><select id="recCat"></select><input id="recDay" type="number" min="1" max="28" data-i18n-ph="recDay"></div>
+    <button id="addRecBtn" class="btn" data-i18n="recAdd"></button>
+    <ul id="recList"></ul>
+  </div>
+  <div class="card">
+    <b data-i18n="dataSection"></b>
+    <div class="row wrap">
+      <button id="exportJsonBtn" class="btn ghost" data-i18n="exportJson"></button>
+      <button id="exportCsvBtn" class="btn ghost" data-i18n="exportCsv"></button>
+      <button id="importBtn" class="btn ghost" data-i18n="importBtn"></button>
+      <button id="trashBtn" class="btn ghost">🗑️ Trash</button>
+    </div>
+    <input id="importFile" type="file" accept=".json" hidden>
+  </div>
+</section>
+</main>
 
-    const addBtn = document.getElementById("addBtn");
-    addBtn.addEventListener("click", async () => {
-      const name = document.getElementById("name").value.trim();
-      const amount = parseFloat(document.getElementById("amount").value || 0);
-      const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
+<nav class="nav">
+  <button data-page="home" class="active">🏠<span data-i18n="navHome"></span></button>
+  <button data-page="income">💰<span data-i18n="navIncome"></span></button>
+  <button data-page="stats">📊<span data-i18n="navStats"></span></button>
+  <button data-page="goals">🎯<span data-i18n="navGoals"></span></button>
+</nav>
 
-      if (!name || !amount) {
-        alert("❗ Ma'lumot to'liq emas!");
-        return;
-      }
+<div id="toasts"></div>
 
-      try {
-        await addDoc(collection(db, "xarajatlar"), {
-          name,
-          amount,
-          date,
-          createdAt: new Date().toISOString()
-        });
+<div id="catModal" class="overlay"><div class="sheet">
+  <h3 data-i18n="newCat"></h3>
+  <input id="newCatName" data-i18n-ph="catNamePh">
+  <input id="newCatEmoji" maxlength="4" data-i18n-ph="emojiPh">
+  <div class="row"><button id="saveCatBtn" class="btn" data-i18n="save"></button><button id="closeCatModal" class="btn ghost" data-i18n="cancel"></button></div>
+</div></div>
 
-        alert("✅ Ma'lumot muvaffaqiyatli saqlandi!");
-        document.getElementById("name").value = "";
-        document.getElementById("amount").value = "";
-        document.getElementById("date").value = "";
-      } catch (err) {
-        console.error("🔥 Xatolik:", err);
-        alert("⚠️ Ma'lumotni saqlab bo'lmadi.");
-      }
-    });
+<div id="catMgr" class="overlay"><div class="sheet">
+  <h3 data-i18n="catMgr"></h3><div class="note" data-i18n="catMgrHint"></div>
+  <div id="catMgrList"></div>
+  <div class="row"><button id="saveCatMgrBtn" class="btn" data-i18n="save"></button><button id="closeCatMgr" class="btn ghost" data-i18n="cancel"></button></div>
+</div></div>
 
-    window.addEventListener("DOMContentLoaded", async () => {
-      const querySnapshot = await getDocs(collection(db, "xarajatlar"));
-      console.log("📂 Bulutdagi ma'lumotlar:");
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-      });
-    });
-  </script>
+<div id="trashModal" class="overlay"><div class="sheet">
+  <h3>🗑️ Trash</h3>
+  <div id="trashList"></div>
+  <div class="row"><button id="emptyTrashBtn" class="btn ghost" data-i18n="emptyTrash"></button><button id="closeTrashBtn" class="btn" data-i18n="cancel"></button></div>
+</div></div>
 
-  <!-- Service Worker -->
-  <script>
-    if (location.protocol === "https:" || location.hostname === "localhost") {
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker
-          .register("service-worker.js")
-          .then(() => console.log("Service Worker ulandi ✅"))
-          .catch(err => console.log("Xatolik:", err));
-      }
-    }
-  </script>
+<div id="aboutModal" class="overlay"><div class="sheet">
+  <h3 data-i18n="about"></h3>
+  <p><b>Xarajat Hisoblagich</b> — <span data-i18n="aboutText"></span></p>
+  <p><span data-i18n="dev"></span>: Suhayl<br><span data-i18n="version"></span>: 2.1.0</p>
+  <p class="note">© 2026 · <span data-i18n="rights"></span></p>
+  <button id="closeAboutBtn" class="btn" data-i18n="cancel"></button>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
