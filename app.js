@@ -15,11 +15,11 @@ const PAL = ['#1b2a3a', '#1fa97a', '#e9b44c', '#e5584a', '#4f86c6', '#9b6bd6', '
 /* ---------- TARJIMA ---------- */
 const T = {
 uz: { about:'Biz haqida', navHome:'Asosiy', navIncome:'Kirim', navStats:'Diagramma', navGoals:'Maqsadlar', balance:'Oylik balans (kirim − chiqim)', limitTitle:'Oylik limit', save:'Saqlash', addExpense:'Yangi xarajat', namePh:'Nima oldingiz?', amountPh:'Summasi', add:"Qo'shish", update:'Yangilash', searchPh:'Qidiruv...', all:'Barchasi', incomeTitle:'Kirim puli', incomeThisMonth:'Shu oydagi kirim', noteOpt:'Izoh (masalan: oylik maosh)', addIncome:"Kirim qo'shish", tabMonth:'Oylik', tabToday:'Bugun', tabYest:'Kecha', tab7:'7 kun', goalsTitle:'Maqsadlar', goalNamePh:'Maqsad nomi', goalPricePh:'Narxi', addGoal:"Maqsad qo'shish", pinSection:'PIN himoya', pinPh:'PIN (4–8 raqam)', savePin:'PINni saqlash', removePin:"PINni o'chirish", dataSection:"Ma'lumotlar", exportJson:'JSON yuklab olish', exportCsv:'CSV yuklab olish', importBtn:'JSON import', emptyTrash:'Tozalash', newCat:'Yangi kategoriya', catNamePh:'Kategoriya nomi', emojiPh:'Emoji', cancel:'Yopish', aboutText:'kunlik kirim-chiqimlarni kuzatish uchun qulay vosita.', dev:'Ishlab chiquvchi', version:'Versiya', rights:'Barcha huquqlar himoyalangan.', pinTitle:'Kirish uchun PIN kiriting', confirm:'Tasdiqlash',
-  som:"so'm", income:'Kirim', expense:'Chiqim', noData:"Ma'lumot yo'q", fillAll:"Ma'lumot to'liq emas", deleted:"O'chirildi", undo:'Qaytarish', limitOver:'Limitdan oshdi', limitLeft:'Limitgacha qoldi', vsPrev:"o'tgan oy", newVal:'yangi', spentOfIncome:'Kirimning sarflangan ulushi', restore:'Tiklash', delPerm:"O'chirish", trashEmpty:"Trash bo'sh", confirmDel:"O'chirilsinmi?", confirmEmpty:'Trash butunlay tozalansinmi?', wrongPin:"Noto'g'ri PIN! Qolgan urinish", blocked:'Kirish bloklandi.', wipe:"10 marta xato! Barcha ma'lumotlar o'chirilib, ilova yangidan boshlansinmi?", importFound:'ta yozuv topildi', importAsk:"OK — mavjudlarga qo'shish\nBekor — hammasini almashtirish", importSure:"Hozirgi barcha ma'lumotlar o'chib, fayldagilar bilan almashadi. Davom etasizmi?", imported:'Import tugadi', badFile:"Fayl formati noto'g'ri", goalDone:'Maqsadga erishildi!', addMoneyPh:'+ summa', last6:'Oxirgi 6 oy: kirim va chiqim', catShare:'Kategoriyalar ulushi', pinSaved:'PIN saqlandi', pinBad:"PIN 4–8 raqam bo'lishi kerak", pinRemoved:"PIN o'chirildi", limitSaved:'Limit saqlandi', balanceLbl:'Balans', week:'7 kun', today:'Bugun', yesterday:'Kecha', catExists:'Bunday kategoriya bor', ofTotal:'jami xarajatdan', quickPh:'Tez: taksi 15000 yoki kofe 12k', catMgr:'Kategoriyalar', catMgrHint:"Nomi, emoji va oylik limit (so'm). Limit bo'sh bo'lsa, cheklov yo'q.", limitPh:"Limit (so'm)", recTitle:"Takroriy to'lovlar (har oy)", recDay:'Oyning kuni (1–28)', recAdd:"To'lov qo'shish", recAdded:"ta takroriy to'lov qo'shildi", backupDue:"Zaxira nusxa saqlang: ma'lumotlar faqat shu qurilmada", backupBtn:'Saqlash', insTitle:'Tahlil', insDaily:"Kunlik o'rtacha", insForecast:'Oy oxirigacha prognoz (chiqim)', insEndBal:'Oy oxirida balans (taxminan)', insTopCat:"Eng ko'p ketgan kategoriya", insTopDay:'Eng xarajatli hafta kuni', ofLimit:'limitdan' },
+  som:"so'm", income:'Kirim', expense:'Chiqim', noData:"Ma'lumot yo'q", fillAll:"Ma'lumot to'liq emas", deleted:"O'chirildi", undo:'Qaytarish', limitOver:'Limitdan oshdi', limitLeft:'Limitgacha qoldi', vsPrev:"o'tgan oy", newVal:'yangi', spentOfIncome:'Kirimning sarflangan ulushi', restore:'Tiklash', delPerm:"O'chirish", trashEmpty:"Trash bo'sh", confirmDel:"O'chirilsinmi?", confirmEmpty:'Trash butunlay tozalansinmi?', wrongPin:"Noto'g'ri PIN! Qolgan urinish", blocked:'Kirish bloklandi.', wipe:"10 marta xato! Barcha ma'lumotlar o'chirilib, ilova yangidan boshlansinmi?", importFound:'ta yozuv topildi', importAsk:"OK — mavjudlarga qo'shish\nBekor — hammasini almashtirish", importSure:"Hozirgi barcha ma'lumotlar o'chib, fayldagilar bilan almashadi. Davom etasizmi?", imported:'Import tugadi', badFile:"Fayl formati noto'g'ri", goalDone:'Maqsadga erishildi!', addMoneyPh:'+ summa', last6:'Oxirgi 6 oy: kirim va chiqim', catShare:'Kategoriyalar ulushi', pinSaved:'PIN saqlandi', pinBad:"PIN 4–8 raqam bo'lishi kerak", pinRemoved:"PIN o'chirildi", limitSaved:'Limit saqlandi', balanceLbl:'Balans', week:'7 kun', today:'Bugun', yesterday:'Kecha', catExists:'Bunday kategoriya bor', ofTotal:'jami xarajatdan', quickPh:'Tez: taksi 15000 yoki kofe 12k', catMgr:'Kategoriyalar', catMgrHint:"Nomi, emoji va oylik limit (so'm). Limit bo'sh bo'lsa, cheklov yo'q.", limitPh:"Limit (so'm)", recTitle:"Takroriy to'lovlar (har oy)", recDay:'Oyning kuni (1–28)', recAdd:"To'lov qo'shish", recAdded:"ta takroriy to'lov qo'shildi", backupDue:"Zaxira nusxa saqlang: ma'lumotlar faqat shu qurilmada", backupBtn:'Saqlash', insTitle:'Tahlil', insDaily:"Kunlik o'rtacha", insForecast:'Oy oxirigacha prognoz (chiqim)', insEndBal:'Oy oxirida balans (taxminan)', insTopCat:"Eng ko'p ketgan kategoriya", insTopDay:'Eng xarajatli hafta kuni', ofLimit:'limitdan', insEarly:"Prognoz uchun kamida 7 kunlik ma'lumot kerak", emptyExp:"Hali xarajat yo'q. Pastdagi + tugmasi bilan birinchisini qo'shing", emptyInc:"Bu yerda kirimlaringiz ko'rinadi. Birinchisini qo'shing", emptyGoal:"Maqsad qo'ying va unga qadam-baqadam yaqinlashing" },
 ru: { about:'О приложении', navHome:'Главная', navIncome:'Доход', navStats:'Диаграмма', navGoals:'Цели', balance:'Баланс месяца (доход − расход)', limitTitle:'Лимит на месяц', save:'Сохранить', addExpense:'Новый расход', namePh:'Что купили?', amountPh:'Сумма', add:'Добавить', update:'Обновить', searchPh:'Поиск...', all:'Все', incomeTitle:'Доход', incomeThisMonth:'Доход за этот месяц', noteOpt:'Заметка (например: зарплата)', addIncome:'Добавить доход', tabMonth:'Месяц', tabToday:'Сегодня', tabYest:'Вчера', tab7:'7 дней', goalsTitle:'Цели', goalNamePh:'Название цели', goalPricePh:'Стоимость', addGoal:'Добавить цель', pinSection:'PIN-защита', pinPh:'PIN (4–8 цифр)', savePin:'Сохранить PIN', removePin:'Удалить PIN', dataSection:'Данные', exportJson:'Скачать JSON', exportCsv:'Скачать CSV', importBtn:'Импорт JSON', emptyTrash:'Очистить', newCat:'Новая категория', catNamePh:'Название категории', emojiPh:'Эмодзи', cancel:'Закрыть', aboutText:'удобный инструмент для учёта ежедневных доходов и расходов.', dev:'Разработчик', version:'Версия', rights:'Все права защищены.', pinTitle:'Введите PIN для входа', confirm:'Подтвердить',
-  som:'сум', income:'Доход', expense:'Расход', noData:'Нет данных', fillAll:'Заполните все поля', deleted:'Удалено', undo:'Вернуть', limitOver:'Превышение лимита', limitLeft:'До лимита осталось', vsPrev:'прошлый месяц', newVal:'новое', spentOfIncome:'Доля дохода, потраченная', restore:'Вернуть', delPerm:'Удалить', trashEmpty:'Корзина пуста', confirmDel:'Удалить?', confirmEmpty:'Очистить корзину полностью?', wrongPin:'Неверный PIN! Осталось попыток', blocked:'Вход заблокирован.', wipe:'10 неверных попыток! Удалить все данные и начать заново?', importFound:'записей найдено', importAsk:'OK — добавить к существующим\nОтмена — заменить всё', importSure:'Все текущие данные будут заменены данными из файла. Продолжить?', imported:'Импорт завершён', badFile:'Неверный формат файла', goalDone:'Цель достигнута!', addMoneyPh:'+ сумма', last6:'Последние 6 месяцев: доход и расход', catShare:'Доли категорий', pinSaved:'PIN сохранён', pinBad:'PIN — от 4 до 8 цифр', pinRemoved:'PIN удалён', limitSaved:'Лимит сохранён', balanceLbl:'Баланс', week:'7 дней', today:'Сегодня', yesterday:'Вчера', catExists:'Такая категория уже есть', ofTotal:'от всех расходов', quickPh:'Быстро: такси 15000 или кофе 12k', catMgr:'Категории', catMgrHint:'Название, эмодзи и лимит на месяц (сум). Пустой лимит — без ограничения.', limitPh:'Лимит (сум)', recTitle:'Регулярные платежи (ежемесячно)', recDay:'День месяца (1–28)', recAdd:'Добавить платёж', recAdded:'регулярных платежей добавлено', backupDue:'Сохраните резервную копию: данные хранятся только на этом устройстве', backupBtn:'Сохранить', insTitle:'Анализ', insDaily:'В среднем в день', insForecast:'Прогноз расходов на конец месяца', insEndBal:'Баланс на конец месяца (прибл.)', insTopCat:'Больше всего ушло на', insTopDay:'Самый затратный день недели', ofLimit:'лимита' },
+  som:'сум', income:'Доход', expense:'Расход', noData:'Нет данных', fillAll:'Заполните все поля', deleted:'Удалено', undo:'Вернуть', limitOver:'Превышение лимита', limitLeft:'До лимита осталось', vsPrev:'прошлый месяц', newVal:'новое', spentOfIncome:'Доля дохода, потраченная', restore:'Вернуть', delPerm:'Удалить', trashEmpty:'Корзина пуста', confirmDel:'Удалить?', confirmEmpty:'Очистить корзину полностью?', wrongPin:'Неверный PIN! Осталось попыток', blocked:'Вход заблокирован.', wipe:'10 неверных попыток! Удалить все данные и начать заново?', importFound:'записей найдено', importAsk:'OK — добавить к существующим\nОтмена — заменить всё', importSure:'Все текущие данные будут заменены данными из файла. Продолжить?', imported:'Импорт завершён', badFile:'Неверный формат файла', goalDone:'Цель достигнута!', addMoneyPh:'+ сумма', last6:'Последние 6 месяцев: доход и расход', catShare:'Доли категорий', pinSaved:'PIN сохранён', pinBad:'PIN — от 4 до 8 цифр', pinRemoved:'PIN удалён', limitSaved:'Лимит сохранён', balanceLbl:'Баланс', week:'7 дней', today:'Сегодня', yesterday:'Вчера', catExists:'Такая категория уже есть', ofTotal:'от всех расходов', quickPh:'Быстро: такси 15000 или кофе 12k', catMgr:'Категории', catMgrHint:'Название, эмодзи и лимит на месяц (сум). Пустой лимит — без ограничения.', limitPh:'Лимит (сум)', recTitle:'Регулярные платежи (ежемесячно)', recDay:'День месяца (1–28)', recAdd:'Добавить платёж', recAdded:'регулярных платежей добавлено', backupDue:'Сохраните резервную копию: данные хранятся только на этом устройстве', backupBtn:'Сохранить', insTitle:'Анализ', insDaily:'В среднем в день', insForecast:'Прогноз расходов на конец месяца', insEndBal:'Баланс на конец месяца (прибл.)', insTopCat:'Больше всего ушло на', insTopDay:'Самый затратный день недели', ofLimit:'лимита', insEarly:'Для прогноза нужно минимум 7 дней данных', emptyExp:'Расходов пока нет. Добавьте первый кнопкой + внизу', emptyInc:'Здесь появятся ваши доходы. Добавьте первый', emptyGoal:'Поставьте цель и приближайтесь к ней шаг за шагом' },
 en: { about:'About', navHome:'Home', navIncome:'Income', navStats:'Charts', navGoals:'Goals', balance:'Monthly balance (income − expenses)', limitTitle:'Monthly limit', save:'Save', addExpense:'New expense', namePh:'What did you buy?', amountPh:'Amount', add:'Add', update:'Update', searchPh:'Search...', all:'All', incomeTitle:'Income', incomeThisMonth:'Income this month', noteOpt:'Note (e.g. salary)', addIncome:'Add income', tabMonth:'Monthly', tabToday:'Today', tabYest:'Yesterday', tab7:'7 days', goalsTitle:'Goals', goalNamePh:'Goal name', goalPricePh:'Price', addGoal:'Add goal', pinSection:'PIN protection', pinPh:'PIN (4–8 digits)', savePin:'Save PIN', removePin:'Remove PIN', dataSection:'Data', exportJson:'Download JSON', exportCsv:'Download CSV', importBtn:'Import JSON', emptyTrash:'Empty', newCat:'New category', catNamePh:'Category name', emojiPh:'Emoji', cancel:'Close', aboutText:'a handy tool for tracking your daily income and spending.', dev:'Developer', version:'Version', rights:'All rights reserved.', pinTitle:'Enter PIN to unlock', confirm:'Confirm',
-  som:'UZS', income:'Income', expense:'Expenses', noData:'No data', fillAll:'Please fill in all fields', deleted:'Deleted', undo:'Undo', limitOver:'Over the limit by', limitLeft:'Left until limit', vsPrev:'last month', newVal:'new', spentOfIncome:'Share of income spent', restore:'Restore', delPerm:'Delete', trashEmpty:'Trash is empty', confirmDel:'Delete?', confirmEmpty:'Empty the trash completely?', wrongPin:'Wrong PIN! Attempts left', blocked:'Access blocked.', wipe:'10 wrong attempts! Erase all data and start over?', importFound:'records found', importAsk:'OK — add to existing\nCancel — replace everything', importSure:'All current data will be replaced with the file contents. Continue?', imported:'Import finished', badFile:'Invalid file format', goalDone:'Goal reached!', addMoneyPh:'+ amount', last6:'Last 6 months: income vs expenses', catShare:'Category share', pinSaved:'PIN saved', pinBad:'PIN must be 4–8 digits', pinRemoved:'PIN removed', limitSaved:'Limit saved', balanceLbl:'Balance', week:'7 days', today:'Today', yesterday:'Yesterday', catExists:'Category already exists', ofTotal:'of all expenses', quickPh:'Quick: taxi 15000 or coffee 12k', catMgr:'Categories', catMgrHint:'Name, emoji and monthly limit (UZS). Empty limit = no limit.', limitPh:'Limit (UZS)', recTitle:'Recurring payments (monthly)', recDay:'Day of month (1–28)', recAdd:'Add payment', recAdded:'recurring payments added', backupDue:'Save a backup: your data lives only on this device', backupBtn:'Save', insTitle:'Insights', insDaily:'Daily average', insForecast:'Month-end expense forecast', insEndBal:'Estimated month-end balance', insTopCat:'Top category', insTopDay:'Priciest weekday', ofLimit:'of limit' }
+  som:'UZS', income:'Income', expense:'Expenses', noData:'No data', fillAll:'Please fill in all fields', deleted:'Deleted', undo:'Undo', limitOver:'Over the limit by', limitLeft:'Left until limit', vsPrev:'last month', newVal:'new', spentOfIncome:'Share of income spent', restore:'Restore', delPerm:'Delete', trashEmpty:'Trash is empty', confirmDel:'Delete?', confirmEmpty:'Empty the trash completely?', wrongPin:'Wrong PIN! Attempts left', blocked:'Access blocked.', wipe:'10 wrong attempts! Erase all data and start over?', importFound:'records found', importAsk:'OK — add to existing\nCancel — replace everything', importSure:'All current data will be replaced with the file contents. Continue?', imported:'Import finished', badFile:'Invalid file format', goalDone:'Goal reached!', addMoneyPh:'+ amount', last6:'Last 6 months: income vs expenses', catShare:'Category share', pinSaved:'PIN saved', pinBad:'PIN must be 4–8 digits', pinRemoved:'PIN removed', limitSaved:'Limit saved', balanceLbl:'Balance', week:'7 days', today:'Today', yesterday:'Yesterday', catExists:'Category already exists', ofTotal:'of all expenses', quickPh:'Quick: taxi 15000 or coffee 12k', catMgr:'Categories', catMgrHint:'Name, emoji and monthly limit (UZS). Empty limit = no limit.', limitPh:'Limit (UZS)', recTitle:'Recurring payments (monthly)', recDay:'Day of month (1–28)', recAdd:'Add payment', recAdded:'recurring payments added', backupDue:'Save a backup: your data lives only on this device', backupBtn:'Save', insTitle:'Insights', insDaily:'Daily average', insForecast:'Month-end expense forecast', insEndBal:'Estimated month-end balance', insTopCat:'Top category', insTopDay:'Priciest weekday', ofLimit:'of limit', insEarly:'A forecast needs at least 7 days of data', emptyExp:'No expenses yet. Add the first one with the + button below', emptyInc:'Your income will show up here. Add the first one', emptyGoal:'Set a goal and get closer to it step by step' }
 };
 
 /* ---------- HOLAT ---------- */
@@ -28,7 +28,7 @@ let limit = Number(raw(K.lim, 0)) || 0, limitOn = raw(K.limOn, 'false') === 'tru
 let expenses = load(K.exp, []), incomes = load(K.inc, []), trash = load(K.trash, []), goals = load(K.goal, []);
 let recurring = load('recurring_v1', []);
 let categories = load(K.cat, null) || [{ name:'Ovqat', emoji:'🍔' }, { name:'Transport', emoji:'🚗' }, { name:'Kommunal', emoji:'⚡' }, { name:'Bozorlik', emoji:'🛍️' }];
-let page = 'home', period = 'month', editId = null, homeChart = null, statsChart = null;
+let justAdded = null, page = 'home', period = 'month', editId = null, homeChart = null, statsChart = null;
 let usd = 12000, rub = 140;
 const rc = load(K.rates, null); if (rc && rc.usd && rc.rub) { usd = rc.usd; rub = rc.rub; }
 
@@ -51,9 +51,40 @@ const money = (uzs, c = currency) => { const v = uzs / rate(c); return num(c ===
 const monthKey = (d = new Date()) => iso(d).slice(0, 7);
 const addMonth = (key, n) => { const [y, m] = key.split('-').map(Number); return iso(new Date(y, m - 1 + n, 1)).slice(0, 7); };
 const sumIn = (arr, key) => arr.filter(e => (e.date || '').slice(0, 7) === key).reduce((s, e) => s + amt(e), 0);
-const monthName = (key, opt = { month:'long', year:'numeric' }) => { const [y, m] = key.split('-').map(Number); return new Intl.DateTimeFormat(locale(), opt).format(new Date(y, m - 1, 1)); };
+const monthName = (key, short) => { const [y, m] = key.split('-').map(Number), n = MN[lang][m - 1]; return short ? n.slice(0, 3) : `${n} ${y}`; };
 const pct = (cur, prev) => prev === 0 ? (cur === 0 ? 0 : null) : (cur - prev) / Math.abs(prev) * 100;
 const pctText = p => p === null ? t('newVal') : (p > 0 ? '▲ ' : p < 0 ? '▼ ' : '') + Math.abs(p).toFixed(1) + '%';
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ICONS = {
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>', plus: '<path d="M12 5v14M5 12h14"/>', bolt: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  sliders: '<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>',
+  home: '<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>', down: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>', target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>', edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+  repeat: '<path d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 0 1-3 3H3"/>',
+  wallet: '<path d="M3 7h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 7l2-3h12v3M16 14h2"/>'
+};
+const svg = (n, s = 20) => `<svg class="i" viewBox="0 0 24 24" width="${s}" height="${s}" aria-hidden="true">${ICONS[n] || ''}</svg>`;
+const empty = (k, ic) => `<div class="empty-state"><div class="eico">${svg(ic, 30)}</div><b>${t(k)}</b></div>`;
+function countTo(el, to, fmt) {
+  const from = el._v ?? 0; el._v = to;
+  if (RM || from === to) { el.textContent = fmt(to); return; }
+  const t0 = performance.now();
+  const step = now => { const k = Math.min(1, (now - t0) / 450), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(from + (to - from) * e); if (k < 1 && el._v === to) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+const MN = { uz: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'],
+  ru: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] };
+const MG = { uz: MN.uz.map(s => s.toLowerCase()), ru: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'], en: MN.en.map(s => s.slice(0, 3)) };
+const WD = { uz: ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'], ru: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'], en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] };
+const fdate = d => {
+  const [y, m, dd] = String(d).split('-').map(Number); if (!m) return d;
+  const mm = MG[lang][m - 1], yr = y !== new Date().getFullYear() ? ' ' + y : '';
+  return lang === 'uz' ? `${dd}-${mm}${yr}` : lang === 'en' ? `${mm} ${dd}${yr ? ',' + yr : ''}` : `${dd} ${mm}${yr}`;
+};
 const muted = () => getComputedStyle(document.body).getPropertyValue('--muted').trim() || '#888';
 
 function toast(msg, undoFn, label) {
@@ -87,8 +118,9 @@ function renderCats() {
 
 function renderHome() {
   const mk = monthKey(), inc = sumIn(incomes, mk), out = sumIn(expenses, mk), bal = inc - out;
-  $('total').textContent = (bal < 0 ? '−' : '') + money(Math.abs(bal));
+  countTo($('total'), bal, v => (v < 0 ? '−' : '') + money(Math.abs(v)));
   $('monthLine').innerHTML = `<span>⬆ ${t('income')}: ${money(inc)}</span><span>⬇ ${t('expense')}: ${money(out)}</span>`;
+  $('limitBody').style.display = limitOn ? '' : 'none';
   const bar = $('limitBar'), note = $('limitNotice');
   if (limitOn && limit > 0) {
     const p = out / limit * 100;
@@ -105,9 +137,10 @@ function renderHome() {
     .sort((a, b) => (b.date || '').localeCompare(a.date || '') || (b.createdAt || '').localeCompare(a.createdAt || ''));
   $('list').innerHTML = list.length ? list.map(e => {
     const c = categories.find(k => k.name === e.category);
-    return `<li><div class="ico">${esc(c ? c.emoji : '📦')}</div><div class="meta"><b>${esc(e.name)}</b><small>${esc(e.category)} · ${esc(e.date)}</small></div><div class="amt">−${money(amt(e))}</div><div class="acts"><button data-a="edit" data-id="${esc(e.id)}">✏️</button><button data-a="del" data-id="${esc(e.id)}">🗑️</button></div></li>`;
-  }).join('') : `<li class="empty">${t('noData')}</li>`;
+    return `<li${String(e.id) === justAdded ? ' class="pop"' : ''}><div class="ico">${esc(c ? c.emoji : '📦')}</div><div class="meta"><b>${esc(e.name)}</b><small>${esc(e.category)} · ${fdate(e.date)}</small></div><div class="amt">−${money(amt(e))}</div><div class="acts"><button data-a="edit" data-id="${esc(e.id)}">${svg('edit', 18)}</button><button data-a="del" data-id="${esc(e.id)}">${svg('trash', 18)}</button></div></li>`;
+  }).join('') : `<li class="plain">${empty('emptyExp', 'wallet')}</li>`;
 
+  justAdded = null;
   const byCat = categories.map(c => ({ c, v: sumIn(list.filter(e => e.category === c.name), mk) })).filter(x => x.v > 0);
   $('chartCard').style.display = byCat.length ? '' : 'none';
   if (homeChart) homeChart.destroy(); homeChart = null;
@@ -118,9 +151,9 @@ function renderHome() {
 
 function renderIncome() {
   const mk = monthKey();
-  $('incTotal').textContent = money(sumIn(incomes, mk)); $('incMonthName').textContent = monthName(mk);
+  countTo($('incTotal'), sumIn(incomes, mk), money); $('incMonthName').textContent = monthName(mk);
   const list = [...incomes].sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 60);
-  $('incList').innerHTML = list.length ? list.map(e => `<li><div class="ico">💰</div><div class="meta"><b>${esc(e.note || t('income'))}</b><small>${esc(e.date)}</small></div><div class="amt in">+${money(amt(e))}</div><div class="acts"><button data-a="idel" data-id="${esc(e.id)}">🗑️</button></div></li>`).join('') : `<li class="empty">${t('noData')}</li>`;
+  $('incList').innerHTML = list.length ? list.map(e => `<li><div class="ico in">${svg('down')}</div><div class="meta"><b>${esc(e.note || t('income'))}</b><small>${fdate(e.date)}</small></div><div class="amt in">+${money(amt(e))}</div><div class="acts"><button data-a="idel" data-id="${esc(e.id)}">${svg('trash', 18)}</button></div></li>`).join('') : `<li class="plain">${empty('emptyInc', 'down')}</li>`;
 }
 
 function renderStats() {
@@ -134,17 +167,17 @@ function renderStats() {
     const I = sumIn(incomes, mk), Ip = sumIn(incomes, pk), E = sumIn(expenses, mk), Ep = sumIn(expenses, pk);
     const card = (lbl, cur, prev, goodUp) => {
       const d = cur - prev, cls = d === 0 ? '' : (d > 0) === goodUp ? 'good' : 'bad';
-      return `<div class="stat"><small>${lbl}</small><b>${cur < 0 ? '−' : ''}${money(Math.abs(cur))}</b><div class="delta ${cls}">${pctText(pct(cur, prev))} · ${d < 0 ? '−' : '+'}${money(Math.abs(d))} <span>(${t('vsPrev')}: ${cur === prev && prev === 0 ? '—' : (prev < 0 ? '−' : '') + money(Math.abs(prev))})</span></div></div>`;
+      return `<div class="stat"><small>${lbl}</small><b>${cur < 0 ? '−' : ''}${money(Math.abs(cur))}</b><div class="delta ${cls}">${pctText(pct(cur, prev))} · ${d < 0 ? '−' : '+'}${money(Math.abs(d))} ${prev === 0 ? '' : `<span>(${t('vsPrev')}: ${(prev < 0 ? '−' : '') + money(Math.abs(prev))})</span>`}</div></div>`;
     };
     $('statDate').textContent = `${monthName(mk)}  ←  ${monthName(pk)}`;
     cards.innerHTML = card('⬆ ' + t('income'), I, Ip, true) + card('⬇ ' + t('expense'), E, Ep, false) + card('⚖️ ' + t('balanceLbl'), I - E, Ip - Ep, true) +
       `<div class="stat"><small>${t('spentOfIncome')}</small><b>${I > 0 ? (E / I * 100).toFixed(0) + '%' : '—'}</b><div class="bar"><i class="${I > 0 && E > I ? 'bad' : ''}" style="width:${I > 0 ? Math.min(100, E / I * 100) : 0}%"></i></div></div>`;
-    const now = new Date(), dim = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate(), avg = E / now.getDate(), fcast = avg * dim;
+    const now = new Date(), dim = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate(), avg = E / now.getDate(), fcast = avg * dim, late = now.getDate() >= 7;
     const byCat = {}, byDay = {};
     expenses.filter(e => (e.date || '').slice(0, 7) === mk).forEach(e => { byCat[e.category] = (byCat[e.category] || 0) + amt(e); const w = new Date(e.date + 'T00:00').getDay(); byDay[w] = (byDay[w] || 0) + amt(e); });
     const top = o => Object.entries(o).sort((a, b) => b[1] - a[1])[0], tc = top(byCat), td = top(byDay);
-    const wd = w => new Intl.DateTimeFormat(locale(), { weekday: 'long' }).format(new Date(2024, 0, 7 + Number(w)));
-    $('statInsights').innerHTML = `<b>💡 ${t('insTitle')}</b>` + (E ? `<div>• ${t('insDaily')}: <b>${money(avg)}</b></div><div>• ${t('insForecast')}: <b>${money(fcast)}</b></div>` + (I ? `<div>• ${t('insEndBal')}: <b>${I - fcast < 0 ? '−' : ''}${money(Math.abs(I - fcast))}</b></div>` : '') + `<div>• ${t('insTopCat')}: <b>${esc(tc[0])}</b> (${(tc[1] / E * 100).toFixed(0)}%)</div><div>• ${t('insTopDay')}: <b>${wd(td[0])}</b></div>` : `<div class="note">${t('noData')}</div>`);
+    const wd = w => WD[lang][Number(w)];
+    $('statInsights').innerHTML = `<b>💡 ${t('insTitle')}</b>` + (E ? `<div>• ${t('insDaily')}: <b>${money(avg)}</b></div>${late ? `<div>• ${t('insForecast')}: <b>${money(fcast)}</b></div>` : `<div class="note">${t('insEarly')}</div>`}` + (I && late ? `<div>• ${t('insEndBal')}: <b>${I - fcast < 0 ? '−' : ''}${money(Math.abs(I - fcast))}</b></div>` : '') + `<div>• ${t('insTopCat')}: <b>${esc(tc[0])}</b> (${(tc[1] / E * 100).toFixed(0)}%)</div><div>• ${t('insTopDay')}: <b>${wd(td[0])}</b></div>` : `<div class="note">${t('noData')}</div>`);
     const keys = [-5, -4, -3, -2, -1, 0].map(n => addMonth(mk, n));
     labels = keys.map(k => monthName(k, { month: 'short' })); type = 'bar';
     data = [{ label: t('income'), data: keys.map(k => sumIn(incomes, k) / rate(currency)), backgroundColor: '#1fa97a', borderRadius: 6 }, { label: t('expense'), data: keys.map(k => sumIn(expenses, k) / rate(currency)), backgroundColor: '#e5584a', borderRadius: 6 }];
@@ -155,7 +188,7 @@ function renderStats() {
     const keys = []; for (let i = n - 1; i >= 0; i--) { const d = new Date(base); d.setDate(d.getDate() - i); keys.push(iso(d)); }
     list = expenses.filter(e => keys.includes(e.date));
     const tot = list.reduce((s, e) => s + amt(e), 0);
-    $('statDate').textContent = n === 1 ? keys[0] : `${keys[0]} → ${keys[n - 1]}`;
+    $('statDate').textContent = n === 1 ? fdate(keys[0]) : `${fdate(keys[0])} → ${fdate(keys[n - 1])}`;
     cards.innerHTML = `<div class="stat"><small>⬇ ${t('expense')}</small><b>${money(tot)}</b></div>`;
     if (n === 7) { labels = keys.map(k => k.slice(5)); type = 'bar'; data = [{ label: t('expense'), data: keys.map(k => list.filter(e => e.date === k).reduce((s, e) => s + amt(e), 0) / rate(currency)), backgroundColor: '#e5584a', borderRadius: 6 }]; }
   }
@@ -171,8 +204,8 @@ function renderStats() {
 function renderGoals() {
   $('goalList').innerHTML = goals.map((g, i) => {
     const p = Math.min(100, (g.current || 0) / (g.target || 1) * 100);
-    return `<div class="goal"><div class="goal-top"><b>${p >= 100 ? '🎉 ' : '🎯 '}${esc(g.name)}</b><button data-a="gdel" data-i="${i}">🗑️</button></div><div class="bar"><i style="width:${p}%"></i></div><div class="note">${num(g.current || 0)} / ${num(g.target)} ${sym(g.currency)} · ${p.toFixed(0)}%${p >= 100 ? ' — ' + t('goalDone') : ''}</div><div class="row"><input id="ga${i}" type="number" inputmode="decimal" placeholder="${t('addMoneyPh')}"><button class="btn sm" data-a="gadd" data-i="${i}">＋</button></div></div>`;
-  }).join('') || `<div class="note">${t('noData')}</div>`;
+    return `<div class="goal"><div class="goal-top"><b>${p >= 100 ? '🎉 ' : '🎯 '}${esc(g.name)}</b><button data-a="gdel" data-i="${i}">${svg('trash', 18)}</button></div><div class="bar"><i style="width:${p}%"></i></div><div class="note">${num(g.current || 0)} / ${num(g.target)} ${sym(g.currency)} · ${p.toFixed(0)}%${p >= 100 ? ' — ' + t('goalDone') : ''}</div><div class="row"><input id="ga${i}" type="number" inputmode="decimal" placeholder="${t('addMoneyPh')}"><button class="btn sm" data-a="gadd" data-i="${i}">＋</button></div></div>`;
+  }).join('') || empty('emptyGoal', 'target');
 }
 
 /* ---------- AMALLAR ---------- */
@@ -181,8 +214,8 @@ function submitExpense() {
   if (!name || !(v > 0)) return toast(t('fillAll'));
   const rec = { name, amountUZS: v * rate(cur), originalAmount: v, originalCurrency: cur, category: $('category').value, date: $('date').value || iso() };
   if (editId) { const e = expenses.find(x => String(x.id) === editId); if (e) Object.assign(e, rec); editId = null; }
-  else expenses.push({ id: uid(), ...rec, createdAt: new Date().toISOString() });
-  $('name').value = ''; $('amount').value = ''; $('addBtn').textContent = t('add');
+  else { justAdded = uid(); expenses.push({ id: justAdded, ...rec, createdAt: new Date().toISOString() }); }
+  $('name').value = ''; $('amount').value = ''; $('addBtn').textContent = t('add'); closeSheet('addSheet');
   saveAll(); render();
   const c = categories.find(k => k.name === rec.category);
   if (c && c.limit > 0) { const p = sumIn(expenses.filter(e => e.category === c.name), monthKey()) / c.limit * 100; if (p >= 80) toast(`${c.emoji} ${c.name}: ${p.toFixed(0)}% ${t('ofLimit')}`); }
@@ -202,10 +235,10 @@ function runRecurring() {
   if (n) { saveAll(); toast(`🔁 ${n} ${t('recAdded')}`); }
 }
 function renderSettings() {
-  $('recList').innerHTML = recurring.map((r, i) => `<li><div class="ico">🔁</div><div class="meta"><b>${esc(r.name)}</b><small>${esc(r.category)} · ${r.day}</small></div><div class="amt">${money(r.amountUZS)}</div><div class="acts"><button data-i="${i}">🗑️</button></div></li>`).join('');
+  $('recList').innerHTML = recurring.map((r, i) => `<li><div class="ico">${svg('repeat')}</div><div class="meta"><b>${esc(r.name)}</b><small>${esc(r.category)} · ${r.day}</small></div><div class="amt">${money(r.amountUZS)}</div><div class="acts"><button data-i="${i}">${svg('trash', 18)}</button></div></li>`).join('');
 }
 function renderCatMgr() {
-  $('catMgrList').innerHTML = categories.map((c, i) => `<div class="row" data-i="${i}"><input class="ce" value="${esc(c.emoji)}" maxlength="4" style="width:60px"><input class="cn" value="${esc(c.name)}"><input class="cl" type="number" inputmode="decimal" value="${c.limit || ''}" placeholder="${t('limitPh')}"><button class="icon-btn">🗑️</button></div>`).join('');
+  $('catMgrList').innerHTML = categories.map((c, i) => `<div class="row" data-i="${i}"><input class="ce" value="${esc(c.emoji)}" maxlength="4" style="width:60px"><input class="cn" value="${esc(c.name)}"><input class="cl" type="number" inputmode="decimal" value="${c.limit || ''}" placeholder="${t('limitPh')}"><button class="icon-btn">${svg('trash', 18)}</button></div>`).join('');
 }
 function delExpense(id) {
   const i = expenses.findIndex(x => String(x.id) === id); if (i < 0) return;
@@ -216,12 +249,12 @@ function restore(id) {
   expenses.push(trash.splice(i, 1)[0]); saveAll(); render(); if ($('trashModal').classList.contains('on')) renderTrash();
 }
 function renderTrash() {
-  $('trashList').innerHTML = trash.length ? trash.map(e => `<div class="trash-row"><div><b>${esc(e.name)}</b><div class="note">${esc(e.date)} · ${money(amt(e))}</div></div><div><button data-a="trs" data-id="${esc(e.id)}">${t('restore')}</button><button class="del" data-a="trd" data-id="${esc(e.id)}">${t('delPerm')}</button></div></div>`).join('') : `<div class="note">${t('trashEmpty')}</div>`;
+  $('trashList').innerHTML = trash.length ? trash.map(e => `<div class="trash-row"><div><b>${esc(e.name)}</b><div class="note">${fdate(e.date)} · ${money(amt(e))}</div></div><div><button data-a="trs" data-id="${esc(e.id)}">${t('restore')}</button><button class="del" data-a="trd" data-id="${esc(e.id)}">${t('delPerm')}</button></div></div>`).join('') : `<div class="note">${t('trashEmpty')}</div>`;
 }
 function startEdit(id) {
   const e = expenses.find(x => String(x.id) === id); if (!e) return;
   editId = id; $('name').value = e.name; $('amount').value = e.originalAmount ?? Math.round(amt(e)); $('itemCurrency').value = e.originalCurrency || 'UZS';
-  $('category').value = e.category; $('date').value = e.date; $('addBtn').textContent = t('update'); $('name').focus(); window.scrollTo({ top: 0, behavior: 'smooth' });
+  $('category').value = e.category; $('date').value = e.date; $('addBtn').textContent = t('update'); openSheet('addSheet');
 }
 function submitIncome() {
   const v = parseFloat($('incAmount').value), cur = $('incCurrency').value;
@@ -271,7 +304,7 @@ function applyLang() {
   $('addBtn').textContent = t(editId ? 'update' : 'add');
   renderCats(); render();
 }
-function applyTheme() { document.documentElement.dataset.theme = theme; $('themeSwitch').textContent = theme === 'dark' ? '☀️' : '🌙'; }
+function applyTheme() { document.documentElement.dataset.theme = theme; $('themeSwitch').innerHTML = svg(theme === 'dark' ? 'sun' : 'moon'); }
 function show(p) {
   page = p;
   $$('.page').forEach(x => x.classList.toggle('active', x.id === 'page-' + p));
@@ -304,7 +337,13 @@ function bind() {
   $('currencySwitch').onchange = e => { currency = e.target.value; put(K.cur, currency); render(); };
   $('themeSwitch').onclick = () => { theme = theme === 'dark' ? 'light' : 'dark'; put(K.theme, theme); applyTheme(); render(); };
   $('settingsBtn').onclick = () => show('settings');
-  $$('.nav button').forEach(b => b.onclick = () => show(b.dataset.page));
+  const openAdd = () => {
+    if (editId) { editId = null; $('name').value = ''; $('amount').value = ''; }
+    $('addBtn').textContent = t('add'); openSheet('addSheet');
+    if (matchMedia('(pointer: fine)').matches) $('quick').focus();
+  };
+  $$('.nav button').forEach(b => b.onclick = () => b.dataset.page ? show(b.dataset.page) : openAdd());
+  $$('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o && o.id !== 'pinModal') o.classList.remove('on'); }));
   $$('.tabs button').forEach(b => b.onclick = () => { period = b.dataset.p; renderStats(); });
   $('menuBtn').onclick = e => { e.stopPropagation(); $('dropdownMenu').classList.toggle('on'); };
   document.addEventListener('click', () => $('dropdownMenu').classList.remove('on'));
@@ -352,6 +391,7 @@ function bind() {
   bind();
   $('currencySwitch').value = currency; $('limitToggle').checked = limitOn; $('limitInput').value = limit || '';
   $('date').value = iso(); $('incDate').value = iso();
+  $$('[data-ic]').forEach(el => { el.innerHTML = svg(el.dataset.ic); });
   runRecurring(); applyTheme(); applyLang();
   setTimeout(() => $('splash').classList.add('hide'), 1600);
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('service-worker.js').catch(() => {});

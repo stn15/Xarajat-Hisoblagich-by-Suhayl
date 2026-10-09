@@ -8,7 +8,7 @@ h3{margin:0 0 4px}
 input,select,button{font:inherit;color:inherit}
 input,select{width:100%;padding:12px 14px;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;outline:0;min-width:0}
 input:focus,select:focus{border-color:var(--navy2)}
-.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px)}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top));background:var(--bg)}
 .top-r{display:flex;gap:6px;align-items:center}.top-r select{width:auto;padding:8px 6px;font-weight:700}
 .icon-btn{width:40px;height:40px;border:1.5px solid var(--line);background:var(--card);border-radius:12px;cursor:pointer;font-size:16px}
 .menu-wrap{position:relative}
@@ -53,7 +53,7 @@ li.empty{justify-content:center;color:var(--muted)}
 .goal{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:8px}
 .goal .bar i{background:var(--gold)}
 .goal-top{display:flex;justify-content:space-between;align-items:center}.goal-top button{background:none;border:0;cursor:pointer}
-.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:4px;justify-content:center;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(12px);border-top:1.5px solid var(--line)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:4px;justify-content:center;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:var(--card);border-top:1.5px solid var(--line)}
 .nav button{flex:1;max-width:130px;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;padding:6px;border-radius:13px;font-size:18px;cursor:pointer;color:var(--muted)}
 .nav button span{font-size:11px;font-weight:700}.nav button.active{background:var(--navy);color:#fff}
 .overlay{position:fixed;inset:0;z-index:50;background:#0008;display:none;align-items:flex-end;justify-content:center;padding:12px}
@@ -72,3 +72,40 @@ li.empty{justify-content:center;color:var(--muted)}
 .splash-title{font-size:22px;font-weight:800;color:#1b2a3a}.splash-author{color:#7a8794}
 canvas{max-width:100%}
 #catMgrList{display:flex;flex-direction:column;gap:8px}#catMgrList input{padding:10px}#catMgrList .icon-btn{flex:0 0 40px}
+
+/* ===== v2.2 professional polish ===== */
+body{font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;letter-spacing:-.005em}
+.i{stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;display:block}
+i[data-ic]{display:inline-flex;font-style:normal}
+.icon-btn{display:inline-grid;place-items:center;color:var(--ink);transition:transform .12s,background .2s}
+.icon-btn:active{transform:scale(.94)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s,opacity .2s}
+.btn:active{transform:scale(.97)}
+.stack{display:flex;flex-direction:column;gap:10px}
+.hero{position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-50px;top:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero strong{font-size:clamp(30px,9vw,40px);font-weight:800;letter-spacing:-.03em}
+.hero small{text-transform:uppercase;letter-spacing:.06em;font-size:11.5px}
+.sheet>b{font-size:17px}
+.ico{color:var(--ink)}.ico.in{color:var(--good)}
+.acts button{color:var(--muted);display:grid;place-items:center;padding:8px;border-radius:10px;transition:background .2s,color .2s}
+.acts button:hover{background:var(--bg);color:var(--ink)}
+.nav button{display:flex;align-items:center;justify-content:center;transition:background .2s,color .2s,transform .12s}
+.nav button:active{transform:scale(.95)}
+.nav button.add{flex:0 0 58px;max-width:58px;width:58px;height:58px;margin-top:-28px;padding:0;border-radius:50%;background:var(--navy);color:#fff;border:4px solid var(--bg);box-shadow:0 8px 20px #1b2a3a55}
+.nav button.add .i{width:26px;height:26px}
+.nav button.add:active{transform:scale(.92)}
+.empty-state{display:flex;flex-direction:column;align-items:center;gap:12px;padding:30px 16px;color:var(--muted);text-align:center;max-width:300px;margin:0 auto}
+.empty-state b{color:var(--ink);font-size:14px;font-weight:600;line-height:1.45}
+.eico{width:68px;height:68px;border-radius:22px;background:var(--card);border:1.5px dashed var(--line);display:grid;place-items:center;color:var(--muted)}
+li.plain{background:none;border:0;justify-content:center;padding:0}
+li.pop{animation:popin .45s cubic-bezier(.2,.9,.3,1.15)}
+@keyframes popin{from{opacity:0;transform:translateY(-12px) scale(.97)}}
+@keyframes fade{from{opacity:0}}
+@keyframes sheetUp{from{opacity:0;transform:translateY(28px)}}
+@keyframes grow{from{transform:scaleX(0)}}
+.overlay.on{animation:fade .2s}
+.sheet{animation:sheetUp .32s cubic-bezier(.2,.8,.2,1)}
+.bar i{transform-origin:left;animation:grow .7s cubic-bezier(.2,.8,.2,1) both}
+.toast{animation:sheetUp .28s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}

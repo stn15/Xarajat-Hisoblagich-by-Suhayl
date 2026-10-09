@@ -22,7 +22,7 @@
 
 <header class="top">
   <div class="menu-wrap">
-    <button id="menuBtn" class="icon-btn">☰</button>
+    <button id="menuBtn" class="icon-btn" aria-label="Menu"><i data-ic="menu"></i></button>
     <div id="dropdownMenu" class="dropdown">
       <button id="aboutBtn" data-i18n="about"></button>
       <div class="sep"></div>
@@ -34,8 +34,8 @@
   <h1>Xarajat Hisoblagich</h1>
   <div class="top-r">
     <select id="currencySwitch"><option>UZS</option><option>USD</option><option>RUB</option></select>
-    <button id="themeSwitch" class="icon-btn">🌙</button>
-    <button id="settingsBtn" class="icon-btn">⚙️</button>
+    <button id="themeSwitch" class="icon-btn" aria-label="Theme"></button>
+    <button id="settingsBtn" class="icon-btn" aria-label="Settings"><i data-ic="sliders"></i></button>
   </div>
 </header>
 
@@ -44,18 +44,12 @@
   <div class="hero"><small data-i18n="balance"></small><strong id="total">0</strong><div id="monthLine" class="month-line"></div></div>
   <div class="card">
     <div class="row between"><b data-i18n="limitTitle"></b><label class="switch"><input type="checkbox" id="limitToggle"><span></span></label></div>
+    <div id="limitBody" class="stack">
     <div class="row"><input type="number" id="limitInput" placeholder="UZS" inputmode="decimal"><button id="limitSaveBtn" class="btn sm" data-i18n="save"></button></div>
     <div class="bar"><i id="limitBar"></i></div><div id="limitNotice" class="note"></div>
+    </div>
   </div>
   <div id="catLimits" class="card"></div>
-  <div class="card">
-    <b data-i18n="addExpense"></b>
-    <div class="row"><input id="quick" data-i18n-ph="quickPh"><button id="quickBtn" class="btn sm">⚡</button></div>
-    <input id="name" data-i18n-ph="namePh">
-    <div class="row"><input id="amount" type="number" inputmode="decimal" data-i18n-ph="amountPh"><select id="itemCurrency"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
-    <div class="row"><input id="date" type="date"><select id="category"></select><button id="addCatBtn" class="btn sm ghost">＋</button><button id="manageCatBtn" class="btn sm ghost">⚙️</button></div>
-    <button id="addBtn" class="btn" data-i18n="add"></button>
-  </div>
   <div class="row"><input id="search" data-i18n-ph="searchPh"><select id="filterCategory"></select></div>
   <ul id="list"></ul>
   <div class="card" id="chartCard"><canvas id="expenseChart"></canvas></div>
@@ -115,7 +109,7 @@
       <button id="exportJsonBtn" class="btn ghost" data-i18n="exportJson"></button>
       <button id="exportCsvBtn" class="btn ghost" data-i18n="exportCsv"></button>
       <button id="importBtn" class="btn ghost" data-i18n="importBtn"></button>
-      <button id="trashBtn" class="btn ghost">🗑️ Trash</button>
+      <button id="trashBtn" class="btn ghost"><i data-ic="trash"></i>Trash</button>
     </div>
     <input id="importFile" type="file" accept=".json" hidden>
   </div>
@@ -123,10 +117,11 @@
 </main>
 
 <nav class="nav">
-  <button data-page="home" class="active">🏠<span data-i18n="navHome"></span></button>
-  <button data-page="income">💰<span data-i18n="navIncome"></span></button>
-  <button data-page="stats">📊<span data-i18n="navStats"></span></button>
-  <button data-page="goals">🎯<span data-i18n="navGoals"></span></button>
+  <button data-page="home" class="active"><i data-ic="home"></i><span data-i18n="navHome"></span></button>
+  <button data-page="income"><i data-ic="down"></i><span data-i18n="navIncome"></span></button>
+  <button class="add" id="navAdd" aria-label="Add"><i data-ic="plus"></i></button>
+  <button data-page="stats"><i data-ic="chart"></i><span data-i18n="navStats"></span></button>
+  <button data-page="goals"><i data-ic="target"></i><span data-i18n="navGoals"></span></button>
 </nav>
 
 <div id="toasts"></div>
@@ -138,6 +133,15 @@
   <div class="row"><button id="saveCatBtn" class="btn" data-i18n="save"></button><button id="closeCatModal" class="btn ghost" data-i18n="cancel"></button></div>
 </div></div>
 
+<div id="addSheet" class="overlay"><div class="sheet">
+    <b data-i18n="addExpense"></b>
+    <div class="row"><input id="quick" data-i18n-ph="quickPh"><button id="quickBtn" class="btn sm" aria-label="Quick add"><i data-ic="bolt"></i></button></div>
+    <input id="name" data-i18n-ph="namePh">
+    <div class="row"><input id="amount" type="number" inputmode="decimal" data-i18n-ph="amountPh"><select id="itemCurrency"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
+    <div class="row"><input id="date" type="date"><select id="category"></select><button id="addCatBtn" class="btn sm ghost" aria-label="Add category"><i data-ic="plus"></i></button><button id="manageCatBtn" class="btn sm ghost" aria-label="Categories"><i data-ic="sliders"></i></button></div>
+    <button id="addBtn" class="btn" data-i18n="add"></button>
+</div></div>
+
 <div id="catMgr" class="overlay"><div class="sheet">
   <h3 data-i18n="catMgr"></h3><div class="note" data-i18n="catMgrHint"></div>
   <div id="catMgrList"></div>
@@ -145,7 +149,7 @@
 </div></div>
 
 <div id="trashModal" class="overlay"><div class="sheet">
-  <h3>🗑️ Trash</h3>
+  <h3>Trash</h3>
   <div id="trashList"></div>
   <div class="row"><button id="emptyTrashBtn" class="btn ghost" data-i18n="emptyTrash"></button><button id="closeTrashBtn" class="btn" data-i18n="cancel"></button></div>
 </div></div>
@@ -153,7 +157,7 @@
 <div id="aboutModal" class="overlay"><div class="sheet">
   <h3 data-i18n="about"></h3>
   <p><b>Xarajat Hisoblagich</b> — <span data-i18n="aboutText"></span></p>
-  <p><span data-i18n="dev"></span>: Suhayl<br><span data-i18n="version"></span>: 2.1.0</p>
+  <p><span data-i18n="dev"></span>: Suhayl<br><span data-i18n="version"></span>: 2.2.0</p>
   <p class="note">© 2026 · <span data-i18n="rights"></span></p>
   <button id="closeAboutBtn" class="btn" data-i18n="cancel"></button>
 </div></div>
