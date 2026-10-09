@@ -1,4 +1,4 @@
-const CACHE_NAME = 'xh-cache-v5';
+const CACHE_NAME = 'xh-cache-v7';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'logo.png', 'icon-192.png', 'icon-512.png', 'manifest.json'];
 
 self.addEventListener('install', event => {

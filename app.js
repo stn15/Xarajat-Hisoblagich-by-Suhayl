@@ -119,13 +119,13 @@ function renderCats() {
 function renderHome() {
   const mk = monthKey(), inc = sumIn(incomes, mk), out = sumIn(expenses, mk), bal = inc - out;
   countTo($('total'), bal, v => (v < 0 ? '−' : '') + money(Math.abs(v)));
-  $('monthLine').innerHTML = `<span>⬆ ${t('income')}: ${money(inc)}</span><span>⬇ ${t('expense')}: ${money(out)}</span>`;
+  $('monthLine').innerHTML = `<span><i class="dot in"></i>${t('income')}: ${money(inc)}</span><span><i class="dot out"></i>${t('expense')}: ${money(out)}</span>`;
   $('limitBody').style.display = limitOn ? '' : 'none';
   const bar = $('limitBar'), note = $('limitNotice');
   if (limitOn && limit > 0) {
     const p = out / limit * 100;
     bar.style.width = Math.min(p, 100) + '%'; bar.className = p >= 100 ? 'bad' : p >= 80 ? 'warn' : '';
-    note.textContent = p >= 100 ? `⚠️ ${t('limitOver')}: ${money(out - limit)}` : `${t('limitLeft')}: ${money(limit - out)} (${p.toFixed(0)}%)`;
+    note.textContent = p >= 100 ? `${t('limitOver')}: ${money(out - limit)}` : `${t('limitLeft')}: ${money(limit - out)} (${p.toFixed(0)}%)`;
   } else { bar.style.width = '0'; note.textContent = ''; }
 
   const lim = categories.filter(c => c.limit > 0);
@@ -170,14 +170,14 @@ function renderStats() {
       return `<div class="stat"><small>${lbl}</small><b>${cur < 0 ? '−' : ''}${money(Math.abs(cur))}</b><div class="delta ${cls}">${pctText(pct(cur, prev))} · ${d < 0 ? '−' : '+'}${money(Math.abs(d))} ${prev === 0 ? '' : `<span>(${t('vsPrev')}: ${(prev < 0 ? '−' : '') + money(Math.abs(prev))})</span>`}</div></div>`;
     };
     $('statDate').textContent = `${monthName(mk)}  ←  ${monthName(pk)}`;
-    cards.innerHTML = card('⬆ ' + t('income'), I, Ip, true) + card('⬇ ' + t('expense'), E, Ep, false) + card('⚖️ ' + t('balanceLbl'), I - E, Ip - Ep, true) +
+    cards.innerHTML = card('<i class="dot in"></i>' + t('income'), I, Ip, true) + card('<i class="dot out"></i>' + t('expense'), E, Ep, false) + card('<i class="dot bal"></i>' + t('balanceLbl'), I - E, Ip - Ep, true) +
       `<div class="stat"><small>${t('spentOfIncome')}</small><b>${I > 0 ? (E / I * 100).toFixed(0) + '%' : '—'}</b><div class="bar"><i class="${I > 0 && E > I ? 'bad' : ''}" style="width:${I > 0 ? Math.min(100, E / I * 100) : 0}%"></i></div></div>`;
     const now = new Date(), dim = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate(), avg = E / now.getDate(), fcast = avg * dim, late = now.getDate() >= 7;
     const byCat = {}, byDay = {};
     expenses.filter(e => (e.date || '').slice(0, 7) === mk).forEach(e => { byCat[e.category] = (byCat[e.category] || 0) + amt(e); const w = new Date(e.date + 'T00:00').getDay(); byDay[w] = (byDay[w] || 0) + amt(e); });
     const top = o => Object.entries(o).sort((a, b) => b[1] - a[1])[0], tc = top(byCat), td = top(byDay);
     const wd = w => WD[lang][Number(w)];
-    $('statInsights').innerHTML = `<b>💡 ${t('insTitle')}</b>` + (E ? `<div>• ${t('insDaily')}: <b>${money(avg)}</b></div>${late ? `<div>• ${t('insForecast')}: <b>${money(fcast)}</b></div>` : `<div class="note">${t('insEarly')}</div>`}` + (I && late ? `<div>• ${t('insEndBal')}: <b>${I - fcast < 0 ? '−' : ''}${money(Math.abs(I - fcast))}</b></div>` : '') + `<div>• ${t('insTopCat')}: <b>${esc(tc[0])}</b> (${(tc[1] / E * 100).toFixed(0)}%)</div><div>• ${t('insTopDay')}: <b>${wd(td[0])}</b></div>` : `<div class="note">${t('noData')}</div>`);
+    $('statInsights').innerHTML = `<b>${t('insTitle')}</b>` + (E ? `<div>• ${t('insDaily')}: <b>${money(avg)}</b></div>${late ? `<div>• ${t('insForecast')}: <b>${money(fcast)}</b></div>` : `<div class="note">${t('insEarly')}</div>`}` + (I && late ? `<div>• ${t('insEndBal')}: <b>${I - fcast < 0 ? '−' : ''}${money(Math.abs(I - fcast))}</b></div>` : '') + `<div>• ${t('insTopCat')}: <b>${esc(tc[0])}</b> (${(tc[1] / E * 100).toFixed(0)}%)</div><div>• ${t('insTopDay')}: <b>${wd(td[0])}</b></div>` : `<div class="note">${t('noData')}</div>`);
     const keys = [-5, -4, -3, -2, -1, 0].map(n => addMonth(mk, n));
     labels = keys.map(k => monthName(k, { month: 'short' })); type = 'bar';
     data = [{ label: t('income'), data: keys.map(k => sumIn(incomes, k) / rate(currency)), backgroundColor: '#1fa97a', borderRadius: 6 }, { label: t('expense'), data: keys.map(k => sumIn(expenses, k) / rate(currency)), backgroundColor: '#e5584a', borderRadius: 6 }];
@@ -189,7 +189,7 @@ function renderStats() {
     list = expenses.filter(e => keys.includes(e.date));
     const tot = list.reduce((s, e) => s + amt(e), 0);
     $('statDate').textContent = n === 1 ? fdate(keys[0]) : `${fdate(keys[0])} → ${fdate(keys[n - 1])}`;
-    cards.innerHTML = `<div class="stat"><small>⬇ ${t('expense')}</small><b>${money(tot)}</b></div>`;
+    cards.innerHTML = `<div class="stat"><small><i class="dot out"></i>${t('expense')}</small><b>${money(tot)}</b></div>`;
     if (n === 7) { labels = keys.map(k => k.slice(5)); type = 'bar'; data = [{ label: t('expense'), data: keys.map(k => list.filter(e => e.date === k).reduce((s, e) => s + amt(e), 0) / rate(currency)), backgroundColor: '#e5584a', borderRadius: 6 }]; }
   }
   const rows = categories.map(c => ({ c, v: list.filter(e => e.category === c.name).reduce((s, e) => s + amt(e), 0) })).filter(x => x.v > 0).sort((a, b) => b.v - a.v);
@@ -204,7 +204,7 @@ function renderStats() {
 function renderGoals() {
   $('goalList').innerHTML = goals.map((g, i) => {
     const p = Math.min(100, (g.current || 0) / (g.target || 1) * 100);
-    return `<div class="goal"><div class="goal-top"><b>${p >= 100 ? '🎉 ' : '🎯 '}${esc(g.name)}</b><button data-a="gdel" data-i="${i}">${svg('trash', 18)}</button></div><div class="bar"><i style="width:${p}%"></i></div><div class="note">${num(g.current || 0)} / ${num(g.target)} ${sym(g.currency)} · ${p.toFixed(0)}%${p >= 100 ? ' — ' + t('goalDone') : ''}</div><div class="row"><input id="ga${i}" type="number" inputmode="decimal" placeholder="${t('addMoneyPh')}"><button class="btn sm" data-a="gadd" data-i="${i}">＋</button></div></div>`;
+    return `<div class="goal"><div class="goal-top"><b>${p >= 100 ? '🎉 ' : ''}${esc(g.name)}</b><button data-a="gdel" data-i="${i}">${svg('trash', 18)}</button></div><div class="bar"><i style="width:${p}%"></i></div><div class="note">${num(g.current || 0)} / ${num(g.target)} ${sym(g.currency)} · ${p.toFixed(0)}%${p >= 100 ? ' — ' + t('goalDone') : ''}</div><div class="row"><input id="ga${i}" type="number" inputmode="decimal" placeholder="${t('addMoneyPh')}"><button class="btn sm" data-a="gadd" data-i="${i}">＋</button></div></div>`;
   }).join('') || empty('emptyGoal', 'target');
 }
 
@@ -232,7 +232,7 @@ function quickAdd() {
 function runRecurring() {
   const mk = monthKey(), today = new Date().getDate(); let n = 0;
   recurring.forEach(r => { if (r.last !== mk && today >= r.day) { expenses.push({ id: uid(), name: r.name, amountUZS: r.amountUZS, originalAmount: r.amountUZS, originalCurrency: 'UZS', category: r.category, date: `${mk}-${String(r.day).padStart(2, '0')}`, createdAt: new Date().toISOString() }); r.last = mk; n++; } });
-  if (n) { saveAll(); toast(`🔁 ${n} ${t('recAdded')}`); }
+  if (n) { saveAll(); toast(`${n} ${t('recAdded')}`); }
 }
 function renderSettings() {
   $('recList').innerHTML = recurring.map((r, i) => `<li><div class="ico">${svg('repeat')}</div><div class="meta"><b>${esc(r.name)}</b><small>${esc(r.category)} · ${r.day}</small></div><div class="amt">${money(r.amountUZS)}</div><div class="acts"><button data-i="${i}">${svg('trash', 18)}</button></div></li>`).join('');

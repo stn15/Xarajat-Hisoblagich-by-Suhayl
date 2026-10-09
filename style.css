@@ -109,3 +109,18 @@ li.pop{animation:popin .45s cubic-bezier(.2,.9,.3,1.15)}
 .bar i{transform-origin:left;animation:grow .7s cubic-bezier(.2,.8,.2,1) both}
 .toast{animation:sheetUp .28s cubic-bezier(.2,.8,.2,1)}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* ===== v2.2.1 ===== */
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.dot.in{background:var(--good)}.dot.out{background:var(--bad)}.dot.bal{background:var(--gold)}
+.hero .dot.in{background:#5ee0b0}.hero .dot.out{background:#ff9a8f}
+.nav{display:grid;grid-template-columns:1fr 1fr 64px 1fr 1fr;align-items:center;gap:2px;left:50%;right:auto;width:100%;max-width:560px;transform:translateX(-50%);border-left:1.5px solid var(--line);border-right:1.5px solid var(--line);border-radius:22px 22px 0 0}
+.nav button{max-width:none;min-width:0;padding:6px 2px}
+.nav button.add{justify-self:center}
+.stat-grid{grid-template-columns:1fr 1fr}
+.stat-grid .stat:nth-child(n+3),.stat-grid .stat:only-child{grid-column:1/-1}
+.stat-grid .stat:nth-child(-n+2) b{font-size:clamp(16px,5vw,21px)}
+.stat{min-width:0}.delta{word-break:break-word}
+
+/* v2.2.2: ichma-ich oynalar ustida chiqsin */
+#catModal,#catMgr{z-index:60}
