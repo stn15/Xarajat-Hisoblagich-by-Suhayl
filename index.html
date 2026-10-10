@@ -91,6 +91,10 @@
 
 <section id="page-settings" class="page">
   <div class="card">
+    <b data-i18n="acctTitle"></b>
+    <div id="acctBody" class="stack"></div>
+  </div>
+  <div class="card">
     <b data-i18n="pinSection"></b>
     <input id="pinInput" type="password" inputmode="numeric" maxlength="8" data-i18n-ph="pinPh">
     <div class="row"><button id="savePinBtn" class="btn" data-i18n="savePin"></button><button id="removePinBtn" class="btn ghost" data-i18n="removePin"></button></div>
@@ -157,12 +161,15 @@
 <div id="aboutModal" class="overlay"><div class="sheet">
   <h3 data-i18n="about"></h3>
   <p><b>Xarajat Hisoblagich</b> — <span data-i18n="aboutText"></span></p>
-  <p><span data-i18n="dev"></span>: Suhayl<br><span data-i18n="version"></span>: 2.2.0</p>
+  <p><span data-i18n="dev"></span>: Suhayl<br><span data-i18n="version"></span>: 2.3.0</p>
   <p class="note">© 2026 · <span data-i18n="rights"></span></p>
   <button id="closeAboutBtn" class="btn" data-i18n="cancel"></button>
 </div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
