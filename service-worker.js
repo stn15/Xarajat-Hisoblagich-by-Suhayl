@@ -1,4 +1,4 @@
-const CACHE_NAME = 'xh-cache-v13';
+const CACHE_NAME = 'xh-cache-v17';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'logo.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'manifest.json'];
 
 // Faqat shu tashqi kutubxonalar keshlanadi (offline uchun). Qolgan hamma tashqi so'rovlar

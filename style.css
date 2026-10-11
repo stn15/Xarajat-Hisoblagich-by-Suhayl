@@ -58,7 +58,6 @@ li.empty{justify-content:center;color:var(--muted)}
 .nav button span{font-size:11px;font-weight:700}.nav button.active{background:var(--navy);color:#fff}
 .overlay{position:fixed;inset:0;z-index:50;background:#0008;display:none;align-items:flex-end;justify-content:center;padding:12px}
 .overlay.on{display:flex}.sheet{background:var(--card);width:100%;max-width:520px;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:10px;max-height:85vh;overflow:auto;animation:in .25s}
-#pinModal{z-index:200;align-items:center}
 .trash-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
 .trash-row button{border:0;border-radius:8px;padding:6px 9px;font-weight:700;cursor:pointer;margin-left:4px;background:var(--navy);color:#fff}
 .trash-row .del{background:var(--bad)}
@@ -157,3 +156,35 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-height:46px;text-al
 .info-btn[aria-expanded=true]{background:var(--navy);border-color:var(--navy);color:#fff}
 .info-text{font-size:13px;line-height:1.5;color:var(--muted);background:var(--bg);border-radius:12px;padding:10px 12px;animation:in .2s}
 .fine{font-size:11px;opacity:.7}
+
+/* ===== v2.3.6: qisqa va jim splash ===== */
+.splash{transition:opacity .3s ease}
+.logo-anim{width:120px;border-radius:26px;animation:softin .4s ease-out both}
+@keyframes softin{from{opacity:0;transform:scale(.94)}}
+
+/* ===== v2.3.7: to'liq ekranli PIN qulfi ===== */
+html.locked .top,html.locked main,html.locked .nav,html.locked #toasts{visibility:hidden}
+#pinModal.lock{position:fixed;inset:0;z-index:300;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px;overflow:auto}
+#pinModal.lock.on{display:flex;animation:fade .2s}
+.lock-in{width:100%;max-width:320px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.lock-logo{width:72px;height:72px;border-radius:20px;box-shadow:0 6px 18px #0002}
+.lock-in h3{margin:4px 0 0;font-size:18px}
+.dots{display:flex;gap:14px;height:18px;align-items:center}
+.dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--muted);transition:background .12s,transform .12s,border-color .12s}
+.dots i.f{background:var(--ink);border-color:var(--ink);transform:scale(1.1)}
+.dots.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.lock .note.bad{min-height:18px}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;margin-top:4px}
+.keypad button{height:clamp(54px,9vh,68px);border-radius:20px;border:1.5px solid var(--line);background:var(--card);font-size:24px;font-weight:700;color:var(--ink);cursor:pointer;display:grid;place-items:center;transition:transform .1s,background .15s}
+.keypad button:active{transform:scale(.94);background:var(--bg)}
+.keypad .ok{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* ===== v2.3.8: PIN ko'z tugmasi ===== */
+.pw{position:relative}.pw input{padding-right:50px}.pw .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%)}
+.eye{width:38px;height:38px;border:0;background:none;color:var(--muted);display:grid;place-items:center;cursor:pointer;border-radius:10px;flex:0 0 38px}
+.eye:active{background:var(--bg)}
+.dots-row{display:flex;align-items:center;gap:6px;justify-content:center}
+.dots i.r{width:auto;min-width:16px;height:auto;border:0;background:none;font-style:normal;font-size:22px;font-weight:800;line-height:18px;color:var(--ink)}
+.dots i.r:not(.f){width:14px;height:14px;border:2px solid var(--muted);border-radius:50%;min-width:0}
+.dots i.f.r{transform:none}

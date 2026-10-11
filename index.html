@@ -9,16 +9,25 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="stylesheet" href="style.css">
+<script>try{if(localStorage.getItem("user_pin_h")||localStorage.getItem("user_pin"))document.documentElement.classList.add("locked")}catch(e){}</script>
 </head>
 <body>
-<div class="splash" id="splash"><img src="logo.png" alt="" class="logo-anim"><div class="splash-title">Xarajat Hisoblagich</div><div class="splash-author">by Suhayl</div></div>
+<div class="splash" id="splash"><img src="logo.png" alt="" class="logo-anim"></div>
 
-<div id="pinModal" class="overlay"><div class="sheet">
-  <h3 data-i18n="pinTitle"></h3>
-  <input id="pinModalInput" type="password" inputmode="numeric" maxlength="8">
-  <div id="pinError" class="note bad"></div>
-  <button id="pinSubmitBtn" class="btn" data-i18n="confirm"></button>
-</div></div>
+<div id="pinModal" class="lock" role="dialog" aria-modal="true">
+  <div class="lock-in">
+    <img src="icon-192.png" class="lock-logo" alt="">
+    <h3 data-i18n="pinTitle"></h3>
+    <div class="dots-row"><div id="pinDots" class="dots"></div><button type="button" id="pinEye" class="eye" aria-label="Show / hide"><i data-ic="eye"></i></button></div>
+    <div id="pinError" class="note bad"></div>
+    <div class="keypad">
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button data-k="back" aria-label="Delete"><i data-ic="backspace"></i></button>
+      <button data-k="0">0</button>
+      <button id="pinSubmitBtn" data-k="ok" class="ok" aria-label="OK"><i data-ic="check"></i></button>
+    </div>
+  </div>
+</div>
 
 <header class="top">
   <div class="menu-wrap">
@@ -63,6 +72,7 @@
     <input id="incNote" data-i18n-ph="noteOpt">
     <label class="fld"><span class="note" data-i18n="dateLbl"></span><input id="incDate" type="date"></label>
     <button id="addIncBtn" class="btn" data-i18n="addIncome"></button>
+    <button id="cancelIncBtn" class="btn ghost" hidden data-i18n="cancelEdit"></button>
   </div>
   <ul id="incList"></ul>
 </section>
@@ -100,7 +110,7 @@
   <div class="card">
     <div class="card-head"><b data-i18n="pinSection"></b><button class="info-btn" aria-label="Info" aria-expanded="false"><i data-ic="info"></i></button></div>
     <div class="info-text" hidden data-i18n="infoPin"></div>
-    <input id="pinInput" type="password" inputmode="numeric" maxlength="8" data-i18n-ph="pinPh">
+    <div class="pw"><input id="pinInput" type="password" inputmode="numeric" maxlength="4" autocomplete="off" data-i18n-ph="pinPh"><button type="button" id="pinEyeSet" class="eye" aria-label="Show / hide"><i data-ic="eye"></i></button></div>
     <div class="row"><button id="savePinBtn" class="btn" data-i18n="savePin"></button><button id="removePinBtn" class="btn ghost" data-i18n="removePin"></button></div>
   </div>
   <div class="card">
@@ -169,13 +179,13 @@
   <h3 data-i18n="about"></h3>
   <img src="icon-192.png" alt="" class="about-logo">
   <b>Xarajat Hisoblagich</b>
-  <div class="note"><span data-i18n="version"></span> 2.3.4</div>
+  <div class="note"><span data-i18n="version"></span> 2.3.8</div>
   <p data-i18n="aboutDesc"></p>
   <div class="about-rows">
     <div><span class="note" data-i18n="contact"></span><a href="mailto:16suhayl@gmail.com">16suhayl@gmail.com</a></div>
     <div><a href="privacy.html" target="_blank" rel="noopener" data-i18n="privacy"></a></div>
   </div>
-  <p class="note fine">© 2026 Suhayl · <span data-i18n="rights"></span></p>
+  <p class="note fine">© 2026 · <span data-i18n="rights"></span></p>
   <button id="closeAboutBtn" class="btn" data-i18n="cancel"></button>
 </div></div>
 
