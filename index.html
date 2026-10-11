@@ -61,7 +61,7 @@
     <b data-i18n="incomeTitle"></b>
     <div class="row"><input id="incAmount" type="number" inputmode="decimal" data-i18n-ph="amountPh"><select id="incCurrency"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
     <input id="incNote" data-i18n-ph="noteOpt">
-    <input id="incDate" type="date">
+    <label class="fld"><span class="note" data-i18n="dateLbl"></span><input id="incDate" type="date"></label>
     <button id="addIncBtn" class="btn" data-i18n="addIncome"></button>
   </div>
   <ul id="incList"></ul>
@@ -90,18 +90,22 @@
 </section>
 
 <section id="page-settings" class="page">
+  <div class="page-head"><button id="backBtn" class="icon-btn" aria-label="Back"><i data-ic="back"></i></button><h2 data-i18n="settingsTitle"></h2></div>
   <div class="card">
-    <b data-i18n="acctTitle"></b>
+    <div class="card-head"><b data-i18n="acctTitle"></b><button class="info-btn" aria-label="Info" aria-expanded="false"><i data-ic="info"></i></button></div>
+    <div class="info-text" hidden data-i18n="infoAcct"></div>
     <div id="acctBody" class="stack"></div>
     <a id="privLink" class="note" href="privacy.html" target="_blank" rel="noopener" data-i18n="privacy"></a>
   </div>
   <div class="card">
-    <b data-i18n="pinSection"></b>
+    <div class="card-head"><b data-i18n="pinSection"></b><button class="info-btn" aria-label="Info" aria-expanded="false"><i data-ic="info"></i></button></div>
+    <div class="info-text" hidden data-i18n="infoPin"></div>
     <input id="pinInput" type="password" inputmode="numeric" maxlength="8" data-i18n-ph="pinPh">
     <div class="row"><button id="savePinBtn" class="btn" data-i18n="savePin"></button><button id="removePinBtn" class="btn ghost" data-i18n="removePin"></button></div>
   </div>
   <div class="card">
-    <b data-i18n="recTitle"></b>
+    <div class="card-head"><b data-i18n="recTitle"></b><button class="info-btn" aria-label="Info" aria-expanded="false"><i data-ic="info"></i></button></div>
+    <div class="info-text" hidden data-i18n="infoRec"></div>
     <input id="recName" data-i18n-ph="namePh">
     <div class="row"><input id="recAmount" type="number" inputmode="decimal" data-i18n-ph="amountPh"><select id="recCur"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
     <div class="row"><select id="recCat"></select><input id="recDay" type="number" min="1" max="28" data-i18n-ph="recDay"></div>
@@ -109,7 +113,8 @@
     <ul id="recList"></ul>
   </div>
   <div class="card">
-    <b data-i18n="dataSection"></b>
+    <div class="card-head"><b data-i18n="dataSection"></b><button class="info-btn" aria-label="Info" aria-expanded="false"><i data-ic="info"></i></button></div>
+    <div class="info-text" hidden data-i18n="infoData"></div>
     <div class="row wrap">
       <button id="exportJsonBtn" class="btn ghost" data-i18n="exportJson"></button>
       <button id="exportCsvBtn" class="btn ghost" data-i18n="exportCsv"></button>
@@ -143,7 +148,8 @@
     <div class="row"><input id="quick" data-i18n-ph="quickPh"><button id="quickBtn" class="btn sm" aria-label="Quick add"><i data-ic="bolt"></i></button></div>
     <input id="name" data-i18n-ph="namePh">
     <div class="row"><input id="amount" type="number" inputmode="decimal" data-i18n-ph="amountPh"><select id="itemCurrency"><option>UZS</option><option>USD</option><option>RUB</option></select></div>
-    <div class="row"><input id="date" type="date"><select id="category"></select><button id="addCatBtn" class="btn sm ghost" aria-label="Add category"><i data-ic="plus"></i></button><button id="manageCatBtn" class="btn sm ghost" aria-label="Categories"><i data-ic="sliders"></i></button></div>
+    <label class="fld"><span class="note" data-i18n="dateLbl"></span><input id="date" type="date"></label>
+    <div class="row"><select id="category"></select><button id="addCatBtn" class="btn sm ghost" aria-label="Add category"><i data-ic="plus"></i></button><button id="manageCatBtn" class="btn sm ghost" aria-label="Categories"><i data-ic="sliders"></i></button></div>
     <button id="addBtn" class="btn" data-i18n="add"></button>
 </div></div>
 
@@ -159,18 +165,24 @@
   <div class="row"><button id="emptyTrashBtn" class="btn ghost" data-i18n="emptyTrash"></button><button id="closeTrashBtn" class="btn" data-i18n="cancel"></button></div>
 </div></div>
 
-<div id="aboutModal" class="overlay"><div class="sheet">
+<div id="aboutModal" class="overlay"><div class="sheet about">
   <h3 data-i18n="about"></h3>
-  <p><b>Xarajat Hisoblagich</b> — <span data-i18n="aboutText"></span></p>
-  <p><span data-i18n="dev"></span>: Suhayl<br><span data-i18n="version"></span>: 2.3.0</p>
-  <p class="note">© 2026 · <span data-i18n="rights"></span></p>
+  <img src="icon-192.png" alt="" class="about-logo">
+  <b>Xarajat Hisoblagich</b>
+  <div class="note"><span data-i18n="version"></span> 2.3.4</div>
+  <p data-i18n="aboutDesc"></p>
+  <div class="about-rows">
+    <div><span class="note" data-i18n="contact"></span><a href="mailto:16suhayl@gmail.com">16suhayl@gmail.com</a></div>
+    <div><a href="privacy.html" target="_blank" rel="noopener" data-i18n="privacy"></a></div>
+  </div>
+  <p class="note fine">© 2026 Suhayl · <span data-i18n="rights"></span></p>
   <button id="closeAboutBtn" class="btn" data-i18n="cancel"></button>
 </div></div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-<script src="app.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script defer src="app.js"></script>
 </body>
 </html>

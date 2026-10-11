@@ -1,10 +1,10 @@
-const CACHE_NAME = 'xh-cache-v9';
-const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'logo.png', 'icon-192.png', 'icon-512.png', 'manifest.json'];
+const CACHE_NAME = 'xh-cache-v13';
+const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'logo.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'manifest.json'];
 
 // Faqat shu tashqi kutubxonalar keshlanadi (offline uchun). Qolgan hamma tashqi so'rovlar
 // (Firestore, Google kirish, kurslar) to'g'ridan-to'g'ri tarmoqqa ketadi — ularga tegmaymiz.
 const CDN = [
-  'https://cdn.jsdelivr.net/npm/chart.js',
+  'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js',
   'https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js',
   'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js'
