@@ -32,7 +32,7 @@ let expenses = load(K.exp, []), incomes = load(K.inc, []), trash = load(K.trash,
 let recurring = load('recurring_v1', []);
 const DEF_CATS = [{ name:'Ovqat', emoji:'🍔' }, { name:'Transport', emoji:'🚗' }, { name:'Kommunal', emoji:'⚡' }, { name:'Bozorlik', emoji:'🛍️' }];
 let categories = load(K.cat, null) || DEF_CATS.map(c => ({ ...c }));
-let editIncId = null, justAdded = null, page = 'home', period = 'month', editId = null, homeChart = null, statsChart = null;
+let editIncId = null, justAdded = null, page = 'home', period = 'month', editId = null, charts = {};
 let catTouched = false;
 let usd = 12000, rub = 140;
 const rc = load(K.rates, null); if (rc && rc.usd && rc.rub) { usd = rc.usd; rub = rc.rub; }
@@ -59,6 +59,17 @@ const sumIn = (arr, key) => arr.filter(e => (e.date || '').slice(0, 7) === key).
 const monthName = (key, short) => { const [y, m] = key.split('-').map(Number), n = MN[lang][m - 1]; return short ? n.slice(0, 3) : `${n} ${y}`; };
 const pct = (cur, prev) => prev === 0 ? (cur === 0 ? 0 : null) : (cur - prev) / Math.abs(prev) * 100;
 const pctText = p => p === null ? t('newVal') : (p > 0 ? '▲ ' : p < 0 ? '▼ ' : '') + Math.abs(p).toFixed(1) + '%';
+// Chart.js hujjatiga ko'ra: grafik faqat o'ziga ajratilgan, aniq balandlikdagi konteynerda bo'lishi kerak (.chart-box),
+// aks holda konteyner va grafik bir-birining o'lchamini tinimsiz o'zgartirishi mumkin.
+const CH_BASE = { responsive: true, maintainAspectRatio: false, resizeDelay: 150, events: ['mousemove', 'mouseout', 'click', 'touchstart'] };
+function drawChart(slot, canvas, cfg) {
+  if (!window.Chart) return;
+  const cur = charts[slot], opts = { ...CH_BASE, ...cfg.options };
+  if (cur && cur.canvas === canvas && cur.config.type === cfg.type) { cur.data = cfg.data; cur.options = opts; cur.resize(); cur.update('none'); return; }
+  if (cur) cur.destroy();
+  charts[slot] = new Chart(canvas, { type: cfg.type, data: cfg.data, options: opts });
+}
+function dropChart(slot) { if (charts[slot]) { charts[slot].destroy(); charts[slot] = null; } }
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ICONS = {
   menu: '<path d="M4 6h16M4 12h16M4 18h16"/>', plus: '<path d="M12 5v14M5 12h14"/>', backspace: '<path d="M21 5H9l-6 7 6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zM17 9l-5 6M12 9l5 6"/>', check: '<path d="M5 12l5 5 9-10"/>', eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>', eyeoff: '<path d="M3 3l18 18M10.6 6.2A9.8 9.8 0 0 1 12 6c6 0 10 6 10 6a17 17 0 0 1-3.2 3.9M6.6 6.6A17 17 0 0 0 2 12s4 6 10 6c1.6 0 3-.4 4.3-1M9.9 9.9a3 3 0 0 0 4.2 4.2"/>', info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>', back: '<path d="M19 12H5M12 5l-7 7 7 7"/>', bolt: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
@@ -327,10 +338,9 @@ function renderHome() {
   justAdded = null;
   const byCat = categories.map(c => ({ c, v: sumIn(list.filter(e => e.category === c.name), mk) })).filter(x => x.v > 0);
   $('chartCard').style.display = byCat.length && window.Chart ? '' : 'none';
-  if (homeChart) homeChart.destroy(); homeChart = null;
-  if (byCat.length && window.Chart) homeChart = new Chart($('expenseChart'), { type: 'doughnut',
+  if (byCat.length) drawChart('home', $('expenseChart'), { type: 'doughnut',
     data: { labels: byCat.map(x => x.c.emoji + ' ' + x.c.name), datasets: [{ data: byCat.map(x => Math.round(x.v / rate(currency) * 100) / 100), backgroundColor: PAL, borderWidth: 0 }] },
-    options: { plugins: { legend: { position: 'bottom', labels: { color: muted() } } } } });
+    options: { plugins: { legend: { position: 'bottom', labels: { color: muted() } } } } }); else dropChart('home');
 }
 
 function renderIncome() {
@@ -343,7 +353,6 @@ function renderIncome() {
 function renderStats() {
   $$('.tabs button').forEach(b => b.classList.toggle('active', b.dataset.p === period));
   $('statInsights').style.display = period === 'month' ? '' : 'none';
-  if (statsChart) statsChart.destroy(); statsChart = null;
   const cards = $('statCards'), sl = $('statsList'), colors = { grid: muted() + '33', tick: muted() };
   let labels, data, type, list;
   if (period === 'month') {
@@ -380,7 +389,8 @@ function renderStats() {
   const total = rows.reduce((s, x) => s + x.v, 0);
   if (!labels) { labels = rows.map(x => x.c.emoji + ' ' + x.c.name); type = 'doughnut'; data = [{ data: rows.map(x => x.v / rate(currency)), backgroundColor: PAL, borderWidth: 0 }]; }
   sl.innerHTML = `<b>${t('catShare')}</b>` + (rows.length ? rows.map(x => `<div class="share"><div class="row"><span>${esc(x.c.emoji)} ${esc(x.c.name)}</span><b>${money(x.v)} · ${(x.v / total * 100).toFixed(0)}%</b></div><div class="bar"><i style="width:${x.v / total * 100}%"></i></div></div>`).join('') : `<div class="note">${t('noData')}</div>`);
-  if (window.Chart) statsChart = new Chart($('statsChart'), { type, data: { labels, datasets: data },
+  $('statsBox').className = 'chart-box' + (type === 'bar' ? ' bar' : '');
+  drawChart('stats', $('statsChart'), { type, data: { labels, datasets: data },
     options: { plugins: { legend: { display: type === 'doughnut' || data.length > 1, position: 'bottom', labels: { color: colors.tick } } },
       scales: type === 'bar' ? { x: { ticks: { color: colors.tick }, grid: { display: false } }, y: { ticks: { color: colors.tick }, grid: { color: colors.grid } } } : {} } });
 }
